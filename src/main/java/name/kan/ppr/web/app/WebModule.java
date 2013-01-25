@@ -1,4 +1,4 @@
-package name.kan.ppr.web;
+package name.kan.ppr.web.app;
 
 import com.google.inject.servlet.ServletModule;
 import org.apache.wicket.protocol.http.WebApplication;

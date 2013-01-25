@@ -16,6 +16,6 @@
 	</filter-mapping>
 
 	<listener>
-		<listener-class>name.kan.ppr.web.GuiceBootstrap</listener-class>
+		<listener-class>name.kan.ppr.web.app.GuiceBootstrap</listener-class>
 	</listener>
 </web-app>

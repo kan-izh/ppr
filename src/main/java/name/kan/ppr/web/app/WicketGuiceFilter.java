@@ -1,4 +1,4 @@
-package name.kan.ppr.web;
+package name.kan.ppr.web.app;
 
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WicketFilter;

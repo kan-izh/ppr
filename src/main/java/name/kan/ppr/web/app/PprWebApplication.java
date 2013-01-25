@@ -1,4 +1,4 @@
-package name.kan.ppr.web;
+package name.kan.ppr.web.app;
 
 import name.kan.ppr.web.main.HomePage;
 import org.apache.wicket.Page;

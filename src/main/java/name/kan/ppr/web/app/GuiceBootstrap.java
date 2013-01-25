@@ -1,4 +1,4 @@
-package name.kan.ppr.web;
+package name.kan.ppr.web.app;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
