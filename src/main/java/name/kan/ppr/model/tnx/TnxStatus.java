@@ -7,4 +7,7 @@ package name.kan.ppr.model.tnx;
 public enum TnxStatus
 {
 	COMPLETED,
+	CANCELLED,
+	REFUNDED,
+	REMOVED,
 }

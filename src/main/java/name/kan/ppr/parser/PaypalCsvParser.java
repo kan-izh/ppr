@@ -4,12 +4,14 @@ package name.kan.ppr.parser;
 import com.google.common.collect.Maps;
 import name.kan.ppr.model.tnx.TnxStatus;
 import name.kan.ppr.model.tnx.TnxType;
+import name.kan.ppr.model.tnx.TnxTypeRepository;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.jumpmind.symmetric.csv.CsvReader;
 
+import javax.inject.Inject;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,6 +29,7 @@ public class PaypalCsvParser
 {
 	private DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd/MM/YYYY HH:mm:ss");
 	private CsvSettings settings;
+	private TnxTypeRepository tnxTypeRepository;
 
 	public void parse(final InputStream fis, final PaypalParserCallback callback) throws IOException
 	{
@@ -71,18 +74,16 @@ public class PaypalCsvParser
 		switch(status)
 		{
 		case "Completed": return TnxStatus.COMPLETED;
+		case "Cancelled": return TnxStatus.CANCELLED;
+		case "Refunded": return TnxStatus.REFUNDED;
+		case "Removed": return TnxStatus.REMOVED;
 		default: throw new IOException("Unexpected status '"+status+"'");
 		}
 	}
 
 	private TnxType parseType(final String type) throws IOException
 	{
-		switch(type)
-		{
-		case "Shopping Cart Payment Received": return TnxType.SHOPPING_CART_PAYMENT_RECEIVED;
-		case "PayPal Express Checkout Payment Sent": return TnxType.PAYPAL_EXPRESS_CHECKOUT_PAYMENT_SENT;
-		default: throw new IOException("Unexpected type '" + type + "'");
-		}
+		return getTnxTypeRepository().obtainByName(type);
 	}
 
 	private DateTime parseDate(final String date, final String time, final String tz)
@@ -113,9 +114,21 @@ public class PaypalCsvParser
 		return settings;
 	}
 
+	@Inject
 	public void setSettings(final CsvSettings settings)
 	{
 		this.settings = settings;
+	}
+
+	public TnxTypeRepository getTnxTypeRepository()
+	{
+		return tnxTypeRepository;
+	}
+
+	@Inject
+	public void setTnxTypeRepository(final TnxTypeRepository tnxTypeRepository)
+	{
+		this.tnxTypeRepository = tnxTypeRepository;
 	}
 
 	private static class TimezoneParser

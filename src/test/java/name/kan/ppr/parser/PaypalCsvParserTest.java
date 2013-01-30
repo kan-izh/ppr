@@ -2,18 +2,22 @@ package name.kan.ppr.parser;
 
 import name.kan.ppr.model.tnx.TnxStatus;
 import name.kan.ppr.model.tnx.TnxType;
+import name.kan.ppr.model.tnx.TnxTypeRepository;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Currency;
 
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author kan
@@ -27,13 +31,25 @@ public class PaypalCsvParserTest
 	@Mock
 	PaypalParserCallback callback;
 
+	@Mock
+	TnxType tnxType;
+
+	@Mock
+	TnxTypeRepository tnxTypeRepository;
+
+	@Spy
 	CsvSettings csvSettings = new CsvSettings();
 
 	public PaypalCsvParserTest()
 	{
 		MockitoAnnotations.initMocks(this);
 		csvSettings.setDelimiter('\t');
-		parser.setSettings(csvSettings);
+	}
+
+	@Before
+	public void setUp() throws Exception
+	{
+		when(tnxTypeRepository.obtainByName("Shopping Cart Payment Received")).thenReturn(tnxType);
 	}
 
 	@Test
@@ -46,7 +62,7 @@ public class PaypalCsvParserTest
 		verify(callback).createTransaction(
 				"54052958PJ614430V",
 				new DateTime("2011-04-01T18:23:36", DateTimeZone.forID("Europe/London")),
-				TnxType.SHOPPING_CART_PAYMENT_RECEIVED,
+				tnxType,
 				TnxStatus.COMPLETED,
 				Currency.getInstance("GBP"),
 				BigDecimal.valueOf(23),
