@@ -1,7 +1,7 @@
 package name.kan.ppr.parser;
 
-import name.kan.ppr.model.tnx.TnxStatus;
-import name.kan.ppr.model.tnx.TnxType;
+import name.kan.ppr.model.txn.TxnStatus;
+import name.kan.ppr.model.txn.TxnType;
 import org.joda.time.DateTime;
 
 import java.math.BigDecimal;
@@ -13,5 +13,5 @@ import java.util.Currency;
  */
 public interface PaypalParserCallback
 {
-	void createTransaction(String txnRef, DateTime dateTime, TnxType type, TnxStatus status, Currency currency, BigDecimal gross, BigDecimal fee);
+	long createTxn(String txnRef, DateTime dateTime, TxnType type, TxnStatus status, Currency currency, BigDecimal gross, BigDecimal fee);
 }

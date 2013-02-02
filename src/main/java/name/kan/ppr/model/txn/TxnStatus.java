@@ -1,10 +1,10 @@
-package name.kan.ppr.model.tnx;
+package name.kan.ppr.model.txn;
 
 /**
  * @author kan
  * @since 2013-01-25 19:42
  */
-public enum TnxStatus
+public enum TxnStatus
 {
 	COMPLETED,
 	CANCELLED,

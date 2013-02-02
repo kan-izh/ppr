@@ -1,4 +1,4 @@
-package name.kan.ppr.model.tnx;
+package name.kan.ppr.model.txn;
 
 import javax.annotation.Nonnull;
 
@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
  * @author kan
  * @since 2013-01-25 19:39
  */
-public class TnxType extends AbstractIdentifiedEntity
+public class TxnType extends AbstractIdentifiedEntity
 {
 	private @Nonnull String name;
 

@@ -1,4 +1,4 @@
-package name.kan.ppr.model.tnx;
+package name.kan.ppr.model.txn;
 
 /**
  * @author kan

@@ -1,8 +1,8 @@
 package name.kan.ppr.parser;
 
-import name.kan.ppr.model.tnx.TnxStatus;
-import name.kan.ppr.model.tnx.TnxType;
-import name.kan.ppr.model.tnx.TnxTypeRepository;
+import name.kan.ppr.model.txn.TxnStatus;
+import name.kan.ppr.model.txn.TxnType;
+import name.kan.ppr.model.txn.TxnTypeRepository;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Before;
@@ -32,10 +32,10 @@ public class PaypalCsvParserTest
 	PaypalParserCallback callback;
 
 	@Mock
-	TnxType tnxType;
+	TxnType txnType;
 
 	@Mock
-	TnxTypeRepository tnxTypeRepository;
+	TxnTypeRepository txnTypeRepository;
 
 	@Spy
 	CsvSettings csvSettings = new CsvSettings();
@@ -49,7 +49,7 @@ public class PaypalCsvParserTest
 	@Before
 	public void setUp() throws Exception
 	{
-		when(tnxTypeRepository.obtainByName("Shopping Cart Payment Received")).thenReturn(tnxType);
+		when(txnTypeRepository.obtainByName("Shopping Cart Payment Received")).thenReturn(txnType);
 	}
 
 	@Test
@@ -59,11 +59,11 @@ public class PaypalCsvParserTest
 		{
 			parser.parse(fis, callback);
 		}
-		verify(callback).createTransaction(
+		verify(callback).createTxn(
 				"54052958PJ614430V",
 				new DateTime("2011-04-01T18:23:36", DateTimeZone.forID("Europe/London")),
-				tnxType,
-				TnxStatus.COMPLETED,
+				txnType,
+				TxnStatus.COMPLETED,
 				Currency.getInstance("GBP"),
 				BigDecimal.valueOf(23),
 				BigDecimal.valueOf(-0.98)

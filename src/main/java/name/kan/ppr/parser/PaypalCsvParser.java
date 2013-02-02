@@ -2,9 +2,9 @@ package name.kan.ppr.parser;
 
 
 import com.google.common.collect.Maps;
-import name.kan.ppr.model.tnx.TnxStatus;
-import name.kan.ppr.model.tnx.TnxType;
-import name.kan.ppr.model.tnx.TnxTypeRepository;
+import name.kan.ppr.model.txn.TxnStatus;
+import name.kan.ppr.model.txn.TxnType;
+import name.kan.ppr.model.txn.TxnTypeRepository;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
@@ -29,7 +29,7 @@ public class PaypalCsvParser
 {
 	private DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd/MM/YYYY HH:mm:ss");
 	private CsvSettings settings;
-	private TnxTypeRepository tnxTypeRepository;
+	private TxnTypeRepository txnTypeRepository;
 
 	public void parse(final InputStream fis, final PaypalParserCallback callback) throws IOException
 	{
@@ -50,17 +50,17 @@ public class PaypalCsvParser
 		final int feeCol = findCol(reader, "Fee");
 		while(reader.readRecord())
 		{
-			final String tnxRef = getNotEmpty(reader, txnRefCol);
+			final String txnRef = getNotEmpty(reader, txnRefCol);
 			final DateTime dateTime = parseDate(
 					getNotEmpty(reader, dateCol),
 					getNotEmpty(reader, timeCol),
 					getNotEmpty(reader, tzCol));
-			final TnxType type = parseType(getNotEmpty(reader, typeCol));
-			final TnxStatus status = parseStatus(getNotEmpty(reader, statusCol));
+			final TxnType type = parseType(getNotEmpty(reader, typeCol));
+			final TxnStatus status = parseStatus(getNotEmpty(reader, statusCol));
 			final Currency currency = parseCurrency(getNotEmpty(reader, currencyCol));
 			final BigDecimal gross = new BigDecimal(getNotEmpty(reader, grossCol));
 			final BigDecimal fee = new BigDecimal(getNotEmpty(reader, feeCol));
-			callback.createTransaction(tnxRef, dateTime, type, status, currency, gross, fee);
+			callback.createTxn(txnRef, dateTime, type, status, currency, gross, fee);
 		}
 	}
 
@@ -69,21 +69,21 @@ public class PaypalCsvParser
 		return Currency.getInstance(notEmpty);
 	}
 
-	private TnxStatus parseStatus(final String status) throws IOException
+	private TxnStatus parseStatus(final String status) throws IOException
 	{
 		switch(status)
 		{
-		case "Completed": return TnxStatus.COMPLETED;
-		case "Cancelled": return TnxStatus.CANCELLED;
-		case "Refunded": return TnxStatus.REFUNDED;
-		case "Removed": return TnxStatus.REMOVED;
+		case "Completed": return TxnStatus.COMPLETED;
+		case "Cancelled": return TxnStatus.CANCELLED;
+		case "Refunded": return TxnStatus.REFUNDED;
+		case "Removed": return TxnStatus.REMOVED;
 		default: throw new IOException("Unexpected status '"+status+"'");
 		}
 	}
 
-	private TnxType parseType(final String type) throws IOException
+	private TxnType parseType(final String type) throws IOException
 	{
-		return getTnxTypeRepository().obtainByName(type);
+		return getTxnTypeRepository().obtainByName(type);
 	}
 
 	private DateTime parseDate(final String date, final String time, final String tz)
@@ -120,15 +120,15 @@ public class PaypalCsvParser
 		this.settings = settings;
 	}
 
-	public TnxTypeRepository getTnxTypeRepository()
+	public TxnTypeRepository getTxnTypeRepository()
 	{
-		return tnxTypeRepository;
+		return txnTypeRepository;
 	}
 
 	@Inject
-	public void setTnxTypeRepository(final TnxTypeRepository tnxTypeRepository)
+	public void setTxnTypeRepository(final TxnTypeRepository txnTypeRepository)
 	{
-		this.tnxTypeRepository = tnxTypeRepository;
+		this.txnTypeRepository = txnTypeRepository;
 	}
 
 	private static class TimezoneParser

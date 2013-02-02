@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<databaseChangeLog
+		xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="
+		http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+		">
+	<changeSet id="init-1" author="kan">
+		<createTable tableName="txn_type">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true"/>
+			</column>
+			<column name="name" type="varchar(255)">
+				<constraints unique="true" nullable="false"/>
+			</column>
+		</createTable>
+		<createSequence sequenceName="txn_type_seq"/>
+		<createTable tableName="txn">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true"/>
+			</column>
+			<column name="ref" type="varchar(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="date_time" type="timestamp">
+				<constraints nullable="false"/>
+			</column>
+			<column name="txn_type_id" type="bigint">
+				<constraints nullable="false" references="txn_type(id)" foreignKeyName="fk_txn__txn_type__id" />
+			</column>
+			<column name="status" type="tinyint">
+				<constraints nullable="false"/>
+			</column>
+			<column name="currency" type="int">
+				<constraints nullable="false"/>
+			</column>
+			<column name="gross" type="decimal(10, 4)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="fee" type="decimal(10, 4)">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+	</changeSet>
+</databaseChangeLog>
