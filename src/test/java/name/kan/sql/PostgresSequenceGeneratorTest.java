@@ -3,7 +3,6 @@ package name.kan.sql;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Answers;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -22,7 +21,6 @@ import static org.mockito.Mockito.when;
 public class PostgresSequenceGeneratorTest
 {
 	private static final String SEQ_NAME = "test_seq";
-	@InjectMocks
 	private PostgresSequenceGenerator generator = new PostgresSequenceGenerator(SEQ_NAME);
 
 	@Mock
@@ -36,6 +34,8 @@ public class PostgresSequenceGeneratorTest
 	{
 		MockitoAnnotations.initMocks(this);
 		when(connectionProvider.get()).thenReturn(connection);
+
+		generator.setConnectionProvider(connectionProvider);
 	}
 
 	@Test

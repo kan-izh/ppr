@@ -1,5 +1,6 @@
 package name.kan.ppr.parser;
 
+import com.google.inject.name.Named;
 import com.google.inject.persist.Transactional;
 import name.kan.ppr.model.txn.TxnStatus;
 import name.kan.ppr.model.txn.TxnType;
@@ -73,7 +74,7 @@ public class JdbcPaypalParserCallback implements PaypalParserCallback
 		return txnSequenceGenerator;
 	}
 
-	@Inject
+	@Inject@Named("tnx")
 	public void setTxnSequenceGenerator(final SequenceGenerator txnSequenceGenerator)
 	{
 		this.txnSequenceGenerator = txnSequenceGenerator;

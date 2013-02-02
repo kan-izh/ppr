@@ -10,7 +10,6 @@ import name.kan.sql.SequenceGenerator;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -35,7 +34,6 @@ import static org.mockito.Mockito.when;
 public class JdbcPaypalParserCallbackTest
 {
 	private static final Currency GBP = Currency.getInstance("GBP");
-	@InjectMocks
 	JdbcPaypalParserCallback callback = new JdbcPaypalParserCallback();
 
 	@Mock
@@ -55,6 +53,7 @@ public class JdbcPaypalParserCallbackTest
 		injector.injectMembers(this);
 
 		callback.setConnectionProvider(connectionProvider);
+		callback.setTxnSequenceGenerator(txnSequenceGenerator);
 		liquibaseFactory.get("name/kan/ppr/test/liquibase.xml").update(null);
 	}
 

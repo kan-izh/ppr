@@ -93,11 +93,13 @@ public class PaypalCsvParser
 		return dateTimeFormatter.withZone(zone).parseDateTime(text);
 	}
 
-	private String getNotEmpty(final CsvReader reader, final int txnRefCol) throws IOException
+	private String getNotEmpty(final CsvReader reader, final int headerIdx) throws IOException
 	{
-		final String value = reader.get(txnRefCol).trim();
-		if(value.isEmpty())
-			throw new IOException("Row " + reader.getCurrentRecord() + " doesn't have Transaction ID");
+		final String rawValue = reader.get(headerIdx);
+		final String value = rawValue == null ? null : rawValue.trim();
+		if(value == null || value.isEmpty())
+			throw new IOException("Row " + (reader.getCurrentRecord() + 1)
+					+ " doesn't have '"+reader.getHeader(headerIdx)+"'");
 		return value;
 	}
 
