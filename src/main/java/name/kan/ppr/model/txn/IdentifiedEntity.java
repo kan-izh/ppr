@@ -6,7 +6,6 @@ package name.kan.ppr.model.txn;
  */
 public interface IdentifiedEntity
 {
-	boolean isTransient();
 	long getId();
 	void setId(long id);
 }

@@ -135,8 +135,10 @@ public class PaypalCsvParser
 
 	private static class TimezoneParser
 	{
-		private static final Map<String, DateTimeZone> shortNames = Maps.newHashMap();
-		static
+		private final Map<String, DateTimeZone> shortNames = Maps.newHashMap();
+		private static final TimezoneParser instance = new TimezoneParser();
+
+		private TimezoneParser()
 		{
 			for(final String id : TimeZone.getAvailableIDs())
 			{
@@ -166,7 +168,7 @@ public class PaypalCsvParser
 
 		public static DateTimeZone findByShortName(final String name)
 		{
-			return shortNames.get(name);
+			return instance.shortNames.get(name);
 		}
 	}
 }

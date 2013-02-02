@@ -20,9 +20,4 @@ public abstract class AbstractIdentifiedEntity implements IdentifiedEntity
 		this.id = id;
 	}
 
-	@Override
-	public boolean isTransient()
-	{
-		return id == null;
-	}
 }
