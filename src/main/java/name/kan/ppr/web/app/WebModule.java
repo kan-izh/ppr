@@ -1,11 +1,9 @@
 package name.kan.ppr.web.app;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.inject.servlet.ServletModule;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WicketFilter;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author kan
@@ -13,14 +11,14 @@ import java.util.Map;
  */
 public class WebModule extends ServletModule
 {
+	private static final String WICKET_PATTERN = "/*";
 
 	@Override
 	protected void configureServlets() {
 		bind(WebApplication.class).to(PprWebApplication.class);
 
-		Map<String, String> params = new HashMap<String, String>();
-		params.put(WicketFilter.FILTER_MAPPING_PARAM, "/*");
-
-		filter("/*").through(WicketGuiceFilter.class, params);
+		filter(WICKET_PATTERN).through(WicketGuiceFilter.class, ImmutableMap.of(
+				WicketFilter.FILTER_MAPPING_PARAM, WICKET_PATTERN
+		));
 	}
 }

@@ -15,7 +15,9 @@ public class PprWebApplication extends WebApplication
 	protected void init()
 	{
 		super.init();
-		final GuiceComponentInjector injector = new GuiceComponentInjector(this);
+		final GuiceComponentInjector injector = new GuiceComponentInjector(this,
+				new DbModule()
+				);
 		getComponentInstantiationListeners().add(injector);
 	}
 

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
+<Configure id='wac' class="org.eclipse.jetty.webapp.WebAppContext">
+	<New class="java.util.Properties">
+		<Call name="load">
+			<Arg>
+				<New class="java.io.FileReader">
+					<Arg>env/dev/db.properties</Arg>
+				</New>
+			</Arg>
+		</Call>
+		<Call id="db.driver" name="get"><Arg>driver</Arg></Call>
+		<Call id="db.url" name="get"><Arg>url</Arg></Call>
+		<Call id="db.username" name="get"><Arg>username</Arg></Call>
+		<Call id="db.password" name="get"><Arg>password</Arg></Call>
+	</New>
+	<New class="org.eclipse.jetty.plus.jndi.Resource">
+		<Arg/>
+		<Arg>jdbc/ppr</Arg>
+		<Arg>
+			<New class="com.jolbox.bonecp.BoneCPDataSource">
+				<Set name="driverClass"><Ref id="db.driver"/></Set>
+				<Set name="jdbcUrl"><Ref id="db.url"/></Set>
+				<Set name="username"><Ref id="db.username"/></Set>
+				<Set name="password"><Ref id="db.password"/></Set>
+				<Set name="minConnectionsPerPartition">1</Set>
+				<Set name="maxConnectionsPerPartition">5</Set>
+			</New>
+		</Arg>
+	</New>
+</Configure>
