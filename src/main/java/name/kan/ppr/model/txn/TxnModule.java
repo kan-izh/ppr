@@ -17,9 +17,14 @@ public class TxnModule extends AbstractModule
 	{
 		bind(TxnTypeRepository.class)
 				.to(TxnTypeRepositoryImpl.class);
-		bind(SequenceGenerator.class)
-				.annotatedWith(named("txn_type"))
-				.toInstance(new PostgresSequenceGenerator("txn_type_seq"));
+		for(String seqName : new String[]{
+				"txn_type_seq"
+		})
+		{
+			bind(SequenceGenerator.class)
+					.annotatedWith(named(seqName))
+					.toInstance(new PostgresSequenceGenerator(seqName));
+		}
 
 	}
 }

@@ -39,6 +39,7 @@ public class PostgresSequenceGenerator implements SequenceGenerator
 		try(final Statement statement = connection.createStatement())
 		{
 			final ResultSet rs = statement.executeQuery(sql);
+			rs.next();
 			return rs.getLong(1);
 		} catch(SQLException e)
 		{

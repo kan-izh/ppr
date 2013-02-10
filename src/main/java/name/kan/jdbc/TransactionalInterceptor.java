@@ -29,29 +29,17 @@ public class TransactionalInterceptor implements MethodInterceptor
 		if(currentConnection != null)
 			throw new UnsupportedOperationException("TODO");
 		else
-			return newConnection(mi);
+			return openConnection(mi);
 	}
 
-	private Object newConnection(final MethodInvocation mi) throws Throwable
+	private Object openConnection(final MethodInvocation mi) throws Throwable
 	{
-		final Method method = mi.getMethod();
 		try(final Connection connection = dataSource.getConnection())
 		{
-			prepareConnection(connection, method);
+			prepareConnection(mi, connection);
 			connectionProvider.setCurrentConnection(connection);
 
-			final Object result;
-			try
-			{
-				result = mi.proceed();
-			} catch(Throwable t)
-			{
-				if(needsRollback(t, mi))
-					connection.rollback();
-				else
-					connection.commit();
-				throw t;
-			}
+			final Object result = proceed(mi, connection);
 			connection.commit();
 			return result;
 		}
@@ -59,6 +47,26 @@ public class TransactionalInterceptor implements MethodInterceptor
 		{
 			connectionProvider.setCurrentConnection(null);
 		}
+	}
+
+	private Object proceed(final MethodInvocation mi, final Connection connection) throws Throwable
+	{
+		try
+		{
+			return mi.proceed();
+		} catch(Throwable t)
+		{
+			processException(mi, connection, t);
+			throw t;
+		}
+	}
+
+	private void processException(final MethodInvocation mi, final Connection connection, final Throwable t) throws SQLException
+	{
+		if(needsRollback(t, mi))
+			connection.rollback();
+		else
+			connection.commit();
 	}
 
 	private boolean needsRollback(final Throwable t, final MethodInvocation mi)
@@ -83,9 +91,9 @@ public class TransactionalInterceptor implements MethodInterceptor
 		return true;
 	}
 
-	private void prepareConnection(final Connection connection, final Method method) throws SQLException
+	private void prepareConnection(final MethodInvocation mi, final Connection connection) throws SQLException
 	{
-		final Transactional annotation = method.getAnnotation(Transactional.class);
+		final Transactional annotation = mi.getMethod().getAnnotation(Transactional.class);
 		connection.setAutoCommit(false);
 		connection.setReadOnly(annotation.readOnly());
 	}

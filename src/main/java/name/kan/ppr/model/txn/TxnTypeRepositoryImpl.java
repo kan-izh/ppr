@@ -1,8 +1,8 @@
 package name.kan.ppr.model.txn;
 
 import com.google.inject.name.Named;
-import com.google.inject.persist.Transactional;
 import name.kan.jdbc.SequenceGenerator;
+import name.kan.jdbc.Transactional;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -20,10 +20,10 @@ public class TxnTypeRepositoryImpl implements TxnTypeRepository
 	@Inject
 	private Provider<Connection> connectionProvider;
 
-	@Inject@Named("tnx_type")
+	@Inject@Named("txn_type_seq")
 	private SequenceGenerator sequenceGenerator;
 
-	@Transactional
+	@Transactional(readOnly = false)
 	@Override
 	public TxnType obtainByName(final String name)
 	{
@@ -48,6 +48,7 @@ public class TxnTypeRepositoryImpl implements TxnTypeRepository
 		final PreparedStatement st = connection().prepareStatement("INSERT INTO txn_type(id, name) VALUES(?, ?)");
 		st.setLong(1, txnType.getId());
 		st.setString(2, txnType.getName());
+		st.execute();
 		return txnType;
 	}
 

@@ -32,6 +32,9 @@ public class TransactionalConnectionProviderTest
 	@Mock
 	private Connection connection;
 
+	@Mock
+	private Connection connection2;
+
 	@Before
 	public void setUp() throws Exception
 	{
@@ -50,6 +53,18 @@ public class TransactionalConnectionProviderTest
 		someService.transactionalMethod();
 		verify(connection).commit();
 		verify(connection).close();
+	}
+
+	@Test
+	public void transactionalMethodTwice() throws Exception
+	{
+		someService.transactionalMethod();
+		verify(connection).commit();
+		verify(connection).close();
+		when(dataSource.getConnection()).thenReturn(connection2);
+		someService.transactionalMethod();
+		verify(connection2).commit();
+		verify(connection2).close();
 	}
 
 	public static class SomeService

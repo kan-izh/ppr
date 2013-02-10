@@ -1,7 +1,6 @@
 package name.kan.jdbc;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Scopes;
 
 import java.sql.Connection;
 
@@ -18,8 +17,7 @@ public class TransactionalModule extends AbstractModule
 	protected void configure()
 	{
 		bind(Connection.class)
-				.toProvider(TransactionalConnectionProviderImpl.class)
-				.in(Scopes.SINGLETON);
+				.toProvider(TransactionalConnectionProviderImpl.class);
 		final TransactionalInterceptor transactionalInterceptor = new TransactionalInterceptor();
 		requestInjection(transactionalInterceptor);
 		bindInterceptor(any(), annotatedWith(Transactional.class),
