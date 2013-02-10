@@ -1,4 +1,4 @@
-package name.kan.sql;
+package name.kan.jdbc;
 
 import org.junit.Before;
 import org.junit.Test;

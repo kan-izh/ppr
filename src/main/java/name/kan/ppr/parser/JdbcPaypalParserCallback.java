@@ -4,7 +4,7 @@ import com.google.inject.name.Named;
 import com.google.inject.persist.Transactional;
 import name.kan.ppr.model.txn.TxnStatus;
 import name.kan.ppr.model.txn.TxnType;
-import name.kan.sql.SequenceGenerator;
+import name.kan.jdbc.SequenceGenerator;
 import org.joda.time.DateTime;
 
 import javax.inject.Inject;

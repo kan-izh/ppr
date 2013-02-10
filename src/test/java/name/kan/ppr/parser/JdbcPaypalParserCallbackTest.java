@@ -6,7 +6,7 @@ import name.kan.ppr.model.txn.TxnType;
 import name.kan.ppr.test.DbModule;
 import name.kan.ppr.test.LiquibaseFactory;
 import name.kan.ppr.test.LiquibaseModule;
-import name.kan.sql.SequenceGenerator;
+import name.kan.jdbc.SequenceGenerator;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;

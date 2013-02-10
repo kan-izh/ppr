@@ -1,4 +1,4 @@
-package name.kan.sql;
+package name.kan.jdbc;
 
 /**
  * @author kan

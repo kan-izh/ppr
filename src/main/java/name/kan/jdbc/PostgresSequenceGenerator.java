@@ -1,4 +1,4 @@
-package name.kan.sql;
+package name.kan.jdbc;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
