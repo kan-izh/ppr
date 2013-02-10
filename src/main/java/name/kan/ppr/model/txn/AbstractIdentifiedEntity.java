@@ -20,4 +20,9 @@ public abstract class AbstractIdentifiedEntity implements IdentifiedEntity
 		this.id = id;
 	}
 
+	@Override
+	public String toString()
+	{
+		return getClass().getName() + "#" + id;
+	}
 }

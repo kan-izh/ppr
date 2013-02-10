@@ -19,4 +19,12 @@ public class TxnType extends AbstractIdentifiedEntity
 	{
 		this.name = name;
 	}
+
+	@Override
+	public String toString()
+	{
+		return super.toString()+
+				"{name='" + name + '\'' +
+				'}';
+	}
 }
