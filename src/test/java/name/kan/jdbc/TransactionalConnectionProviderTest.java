@@ -4,16 +4,20 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.sql.DataSource;
+import java.io.EOFException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -23,6 +27,9 @@ import static org.mockito.Mockito.when;
  */
 public class TransactionalConnectionProviderTest
 {
+	@Rule
+	public ExpectedException expectedException = ExpectedException.none();
+
 	@Inject
 	private SomeService someService;
 
@@ -67,6 +74,61 @@ public class TransactionalConnectionProviderTest
 		verify(connection2).close();
 	}
 
+	@Test
+	public void notAnnotated() throws Exception
+	{
+		expectedException.expectMessage(containsString("Transaction was not open"));
+		someService.notAnnotated();
+	}
+
+	@Test
+	public void throwsUnexpectedException() throws Exception
+	{
+		try
+		{
+			someService.throwsUnexpectedException();
+		}
+		catch(RuntimeException ignore){}
+		verify(connection).rollback();
+		verify(connection).close();
+	}
+
+	@Test
+	public void throwsDeclaredException() throws Exception
+	{
+		try
+		{
+			someService.throwsDeclaredException();
+		}
+		catch(EOFException ignore){}
+		verify(connection).commit();
+		verify(connection).close();
+	}
+
+	@Test
+	public void throwsIgnoredException() throws Exception
+	{
+		try
+		{
+			someService.throwsIgnoredException();
+		}
+		catch(ArithmeticException ignore){}
+		verify(connection).commit();
+		verify(connection).close();
+	}
+
+	@Test
+	public void throwsAnError() throws Exception
+	{
+		try
+		{
+			someService.throwsAnError();
+		}
+		catch(ClassFormatError ignore){}
+		verify(connection).rollback();
+		verify(connection).close();
+	}
+
 	public static class SomeService
 	{
 		@Inject
@@ -82,6 +144,41 @@ public class TransactionalConnectionProviderTest
 			{
 				throw new AssertionError(e);
 			}
+		}
+
+		public void notAnnotated()
+		{
+			try
+			{
+				connectionProvider.get().createStatement();
+			} catch(SQLException e)
+			{
+				throw new AssertionError(e);
+			}
+		}
+
+		@Transactional
+		public void throwsUnexpectedException()
+		{
+			throw new RuntimeException("Boooom!");
+		}
+
+		@Transactional
+		public void throwsDeclaredException() throws EOFException
+		{
+			throw new EOFException("Boooom!");
+		}
+
+		@Transactional(ignore = ArithmeticException.class)
+		public void throwsIgnoredException()
+		{
+			throw new ArithmeticException("Boooom!");
+		}
+
+		@Transactional(rollbackOn = ArithmeticException.class)
+		public void throwsAnError()
+		{
+			throw new ClassFormatError("Boooom!");
 		}
 	}
 

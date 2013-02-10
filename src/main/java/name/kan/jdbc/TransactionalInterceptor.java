@@ -73,17 +73,17 @@ public class TransactionalInterceptor implements MethodInterceptor
 	{
 		final Method method = mi.getMethod();
 		final Transactional annotation = method.getAnnotation(Transactional.class);
-		for(Class<? extends Exception> e : annotation.rollbackOn())
-		{
-			if(e.isAssignableFrom(t.getClass()))
-				return true;
-		}
-		for(Class<? extends Exception> e : annotation.ignore())
+		for(final Class<? extends Exception> e : annotation.ignore())
 		{
 			if(e.isAssignableFrom(t.getClass()))
 				return false;
 		}
-		for(Class<?> e : method.getExceptionTypes())
+		for(final Class<? extends Exception> e : annotation.rollbackOn())
+		{
+			if(e.isAssignableFrom(t.getClass()))
+				return true;
+		}
+		for(final Class<?> e : method.getExceptionTypes())
 		{
 			if(e.isAssignableFrom(t.getClass()))
 				return false;
