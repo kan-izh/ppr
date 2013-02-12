@@ -8,7 +8,7 @@
 	<include file="name/kan/ppr/liquibase/changelog/common/init.xml"/>
 	<changeSet id="test-data-txn_type" author="kan">
 		<insert tableName="txn_type">
-			<column name="id" value="1"/>
+			<column name="id" value="1000"/>
 			<column name="name" value="test type"/>
 		</insert>
 	</changeSet>

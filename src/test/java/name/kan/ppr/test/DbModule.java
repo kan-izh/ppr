@@ -1,12 +1,9 @@
 package name.kan.ppr.test;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.ProvisionException;
+import org.h2.jdbcx.JdbcDataSource;
 
-import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import javax.sql.DataSource;
 
 /**
  * @author kan
@@ -17,13 +14,9 @@ public class DbModule extends AbstractModule
 	@Override
 	protected void configure()
 	{
-		bind(Driver.class).to(org.h2.Driver.class);
-		try
-		{
-			bind(Connection.class).toInstance(DriverManager.getConnection("jdbc:h2:mem:unit_test"));
-		} catch(SQLException e)
-		{
-			throw new ProvisionException("Cannot connect", e);
-		}
+		final JdbcDataSource h2Ds = new JdbcDataSource();
+		h2Ds.setURL("jdbc:h2:mem:unit_test;DB_CLOSE_DELAY=-1");
+		bind(DataSource.class)
+				.toInstance(h2Ds);
 	}
 }

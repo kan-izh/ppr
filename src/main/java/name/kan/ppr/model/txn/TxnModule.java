@@ -3,6 +3,8 @@ package name.kan.ppr.model.txn;
 import com.google.inject.AbstractModule;
 import name.kan.jdbc.PostgresSequenceGenerator;
 import name.kan.jdbc.SequenceGenerator;
+import name.kan.ppr.parser.JdbcPaypalParserCallback;
+import name.kan.ppr.parser.PaypalParserCallback;
 
 import static com.google.inject.name.Names.named;
 
@@ -17,7 +19,10 @@ public class TxnModule extends AbstractModule
 	{
 		bind(TxnTypeRepository.class)
 				.to(TxnTypeRepositoryImpl.class);
+		bind(PaypalParserCallback.class)
+				.to(JdbcPaypalParserCallback.class);
 		for(String seqName : new String[]{
+				"txn_seq",
 				"txn_type_seq"
 		})
 		{

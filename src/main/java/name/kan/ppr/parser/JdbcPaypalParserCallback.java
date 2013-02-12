@@ -32,16 +32,17 @@ public class JdbcPaypalParserCallback implements PaypalParserCallback
 
 	private Provider<Connection> connectionProvider;
 
+	@Inject@Named("txn_seq")
 	private SequenceGenerator txnSequenceGenerator;
 
-	@Transactional
+	@Transactional(readOnly = false)
 	@Override
 	public long createTxn(final String txnRef, final DateTime dateTime, final TxnType type, final TxnStatus status, final Currency currency, final BigDecimal gross, final BigDecimal fee)
 	{
 		final Connection connection = getConnectionProvider().get();
 		try(final PreparedStatement statement = connection.prepareStatement(CREATE_TXN_SQL))
 		{
-			final long id = getTxnSequenceGenerator().next();
+			final long id = txnSequenceGenerator.next();
 			statement.setLong(1, id);
 			statement.setString(2, txnRef);
 			statement.setDate(3, new Date(dateTime.getMillis()), UTC_CALENDAR);
@@ -67,16 +68,5 @@ public class JdbcPaypalParserCallback implements PaypalParserCallback
 	public void setConnectionProvider(final Provider<Connection> connectionProvider)
 	{
 		this.connectionProvider = connectionProvider;
-	}
-
-	public SequenceGenerator getTxnSequenceGenerator()
-	{
-		return txnSequenceGenerator;
-	}
-
-	@Inject@Named("tnx")
-	public void setTxnSequenceGenerator(final SequenceGenerator txnSequenceGenerator)
-	{
-		this.txnSequenceGenerator = txnSequenceGenerator;
 	}
 }

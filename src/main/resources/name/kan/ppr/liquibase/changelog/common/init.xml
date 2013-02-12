@@ -41,5 +41,6 @@
 				<constraints nullable="false"/>
 			</column>
 		</createTable>
+		<createSequence sequenceName="txn_seq"/>
 	</changeSet>
 </databaseChangeLog>
