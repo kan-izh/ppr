@@ -10,7 +10,10 @@ import org.junit.Test;
 
 import javax.inject.Inject;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author kan
@@ -40,5 +43,26 @@ public class TxnTypeRepositoryImplTest
 	{
 		final TxnType type = txnTypeRepository.obtainByName("test");
 		assertEquals("test", type.getName());
+	}
+
+	@Test
+	public void testObtainByNameSameName() throws Exception
+	{
+		final TxnType type = txnTypeRepository.obtainByName("test");
+		final TxnType type2 = txnTypeRepository.obtainByName("test");
+		assertEquals(type, type2);
+	}
+	@Test
+	public void testObtainByNameDifferentName() throws Exception
+	{
+		final TxnType type = txnTypeRepository.obtainByName("test");
+		final TxnType type2 = txnTypeRepository.obtainByName("test2");
+		assertThat(type, not(equalTo(type2)));
+	}
+
+	@Test
+	public void testSqlFailure() throws Exception
+	{
+
 	}
 }
