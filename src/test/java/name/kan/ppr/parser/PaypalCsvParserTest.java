@@ -1,11 +1,8 @@
 package name.kan.ppr.parser;
 
 import name.kan.ppr.model.txn.TxnStatus;
-import name.kan.ppr.model.txn.TxnType;
-import name.kan.ppr.model.txn.TxnTypeRepository;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -24,7 +21,6 @@ import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * @author kan
@@ -40,12 +36,6 @@ public class PaypalCsvParserTest
 	@Mock
 	PaypalParserCallback callback;
 
-	@Mock
-	TxnType txnType;
-
-	@Mock
-	TxnTypeRepository txnTypeRepository;
-
 	@Spy
 	CsvSettings csvSettings = new CsvSettings();
 
@@ -54,13 +44,6 @@ public class PaypalCsvParserTest
 		MockitoAnnotations.initMocks(this);
 		csvSettings.setDelimiter('\t');
 		parser.setSettings(csvSettings);
-		parser.setTxnTypeRepository(txnTypeRepository);
-	}
-
-	@Before
-	public void setUp() throws Exception
-	{
-		when(txnTypeRepository.obtainByName("Shopping Cart Payment Received")).thenReturn(txnType);
 	}
 
 	@Test
@@ -73,7 +56,8 @@ public class PaypalCsvParserTest
 		verify(callback).createTxn(
 				"54052958PJ614430V",
 				new DateTime("2011-04-01T18:23:36", DateTimeZone.forID("Europe/London")),
-				txnType,
+				"melanie hammond",
+				"Shopping Cart Payment Received",
 				TxnStatus.COMPLETED,
 				Currency.getInstance("GBP"),
 				BigDecimal.valueOf(23),
@@ -115,42 +99,17 @@ public class PaypalCsvParserTest
 		{
 			parser.parse(fis, callback);
 		}
-		verify(callback).createTxn(
-				anyString(),
-				Matchers.<DateTime>any(),
-				Matchers.<TxnType>any(),
-				eq(TxnStatus.COMPLETED),
-				Matchers.<Currency>any(),
-				Matchers.<BigDecimal>any(),
-				Matchers.<BigDecimal>any()
-		);
-		verify(callback).createTxn(
-				anyString(),
-				Matchers.<DateTime>any(),
-				Matchers.<TxnType>any(),
-				eq(TxnStatus.CANCELLED),
-				Matchers.<Currency>any(),
-				Matchers.<BigDecimal>any(),
-				Matchers.<BigDecimal>any()
-		);
-		verify(callback).createTxn(
-				anyString(),
-				Matchers.<DateTime>any(),
-				Matchers.<TxnType>any(),
-				eq(TxnStatus.REFUNDED),
-				Matchers.<Currency>any(),
-				Matchers.<BigDecimal>any(),
-				Matchers.<BigDecimal>any()
-		);
-		verify(callback).createTxn(
-				anyString(),
-				Matchers.<DateTime>any(),
-				Matchers.<TxnType>any(),
-				eq(TxnStatus.REMOVED),
-				Matchers.<Currency>any(),
-				Matchers.<BigDecimal>any(),
-				Matchers.<BigDecimal>any()
-		);
+		for(final TxnStatus status : TxnStatus.values())
+			verify(callback).createTxn(
+					anyString(),
+					Matchers.<DateTime>any(),
+					anyString(),
+					anyString(),
+					eq(status),
+					Matchers.<Currency>any(),
+					Matchers.<BigDecimal>any(),
+					Matchers.<BigDecimal>any()
+			);
 	}
 
 	@Test

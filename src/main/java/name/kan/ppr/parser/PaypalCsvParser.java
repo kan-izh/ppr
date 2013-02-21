@@ -3,8 +3,6 @@ package name.kan.ppr.parser;
 
 import com.google.common.collect.Maps;
 import name.kan.ppr.model.txn.TxnStatus;
-import name.kan.ppr.model.txn.TxnType;
-import name.kan.ppr.model.txn.TxnTypeRepository;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
@@ -29,7 +27,6 @@ public class PaypalCsvParser
 {
 	private DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd/MM/YYYY HH:mm:ss");
 	private CsvSettings settings;
-	private TxnTypeRepository txnTypeRepository;
 
 	public void parse(final InputStream fis, final PaypalParserCallback callback) throws IOException
 	{
@@ -43,6 +40,7 @@ public class PaypalCsvParser
 		final int dateCol = findCol(reader, "Date");
 		final int timeCol = findCol(reader, "Time");
 		final int tzCol = findCol(reader, "Time Zone");
+		final int nameCol = findCol(reader, "Name");
 		final int typeCol = findCol(reader, "Type");
 		final int statusCol = findCol(reader, "Status");
 		final int currencyCol = findCol(reader, "Currency");
@@ -55,12 +53,13 @@ public class PaypalCsvParser
 					getNotEmpty(reader, dateCol),
 					getNotEmpty(reader, timeCol),
 					getNotEmpty(reader, tzCol));
-			final TxnType type = parseType(getNotEmpty(reader, typeCol));
+			final String accountName = getNotEmpty(reader, nameCol);
+			final String type = getNotEmpty(reader, typeCol);
 			final TxnStatus status = parseStatus(getNotEmpty(reader, statusCol));
 			final Currency currency = parseCurrency(getNotEmpty(reader, currencyCol));
 			final BigDecimal gross = new BigDecimal(getNotEmpty(reader, grossCol));
 			final BigDecimal fee = new BigDecimal(getNotEmpty(reader, feeCol));
-			callback.createTxn(txnRef, dateTime, type, status, currency, gross, fee);
+			callback.createTxn(txnRef, dateTime, accountName, type, status, currency, gross, fee);
 		}
 	}
 
@@ -79,11 +78,6 @@ public class PaypalCsvParser
 		case "Removed": return TxnStatus.REMOVED;
 		default: throw new IOException("Unexpected status '"+status+"'");
 		}
-	}
-
-	private TxnType parseType(final String type) throws IOException
-	{
-		return getTxnTypeRepository().obtainByName(type);
 	}
 
 	private DateTime parseDate(final String date, final String time, final String tz)
@@ -120,17 +114,6 @@ public class PaypalCsvParser
 	public void setSettings(final CsvSettings settings)
 	{
 		this.settings = settings;
-	}
-
-	public TxnTypeRepository getTxnTypeRepository()
-	{
-		return txnTypeRepository;
-	}
-
-	@Inject
-	public void setTxnTypeRepository(final TxnTypeRepository txnTypeRepository)
-	{
-		this.txnTypeRepository = txnTypeRepository;
 	}
 
 	private static class TimezoneParser

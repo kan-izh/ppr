@@ -1,4 +1,6 @@
-package name.kan.ppr.model.txn;
+package name.kan.ppr.model;
+
+import name.kan.ppr.model.txn.IdentifiedEntity;
 
 /**
  * @author kan

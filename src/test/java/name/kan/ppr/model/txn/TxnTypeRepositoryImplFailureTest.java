@@ -2,6 +2,7 @@ package name.kan.ppr.model.txn;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import name.kan.ppr.model.account.AccountModule;
 import name.kan.ppr.test.FailDbModule;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +23,7 @@ public class TxnTypeRepositoryImplFailureTest
 	{
 		final Injector injector = Guice.createInjector(
 				new FailDbModule(),
+				new AccountModule(),
 				new TxnModule());
 		injector.injectMembers(this);
 	}

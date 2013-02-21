@@ -6,5 +6,5 @@ package name.kan.ppr.model.txn;
  */
 public interface TxnTypeRepository
 {
-	TxnType obtainByName(String name);
+	TxnTypeEntity obtainByName(String name);
 }

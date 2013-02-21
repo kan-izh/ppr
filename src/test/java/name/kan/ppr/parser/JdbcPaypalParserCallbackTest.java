@@ -1,77 +1,86 @@
 package name.kan.ppr.parser;
 
-import com.google.inject.Injector;
-import name.kan.jdbc.TransactionalModule;
-import name.kan.ppr.model.txn.TxnModule;
+import name.kan.ppr.model.account.AccountEntity;
+import name.kan.ppr.model.account.AccountRepository;
+import name.kan.ppr.model.txn.TxnEntity;
+import name.kan.ppr.model.txn.TxnRepository;
 import name.kan.ppr.model.txn.TxnStatus;
-import name.kan.ppr.model.txn.TxnType;
-import name.kan.ppr.test.DbModule;
-import name.kan.ppr.test.LiquibaseWorker;
+import name.kan.ppr.model.txn.TxnTypeEntity;
+import name.kan.ppr.model.txn.TxnTypeRepository;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.sql.DataSource;
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.Currency;
 
-import static com.google.inject.Guice.createInjector;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author kan
- * @since 2013-02-02 01:02
+ * @since 2013-02-16 00:41
  */
 public class JdbcPaypalParserCallbackTest
 {
-	private static final Currency GBP = Currency.getInstance("GBP");
-	@Inject
-	JdbcPaypalParserCallback callback;
+	private static final String A_TYPE_NAME = "a type name";
+	private static final String AN_ACCOUNT_NAME = "an account name";
+	@InjectMocks
+	private final JdbcPaypalParserCallback callback = new JdbcPaypalParserCallback();
 
-	@Inject
-	Provider<Connection> connectionProvider;
+	@Mock TxnTypeRepository txnTypeRepository;
 
-	@Inject
-	LiquibaseWorker liquibaseWorker;
+	@Mock TxnRepository txnRepository;
 
-	@Inject
-	DataSource dataSource;
+	@Mock TxnTypeEntity txnType;
+
+	@Mock AccountEntity accountEntity;
+
+	@Mock AccountRepository accountRepository;
+
+	@Captor ArgumentCaptor<TxnEntity> entityCaptor;
 
 	@Before
 	public void setUp() throws Exception
 	{
 		MockitoAnnotations.initMocks(this);
-		final Injector injector = createInjector(
-				new DbModule(),
-				new TxnModule(),
-				new TransactionalModule());
-		injector.injectMembers(this);
-
-		liquibaseWorker.update("name/kan/ppr/test/liquibase.xml");
+		when(txnTypeRepository.obtainByName(A_TYPE_NAME)).thenReturn(txnType);
+		when(accountRepository.obtainByName(AN_ACCOUNT_NAME)).thenReturn(accountEntity);
 	}
 
 	@Test
 	public void testCreateTxn() throws Exception
 	{
-		final TxnType type = new TxnType();
-		type.setId(1000);
-		final long id = callback.createTxn("ref", DateTime.now(), type, TxnStatus.COMPLETED, GBP, BigDecimal.valueOf(12.34), BigDecimal.valueOf(1.23));
-		try(
-				final Connection connection = dataSource.getConnection();
-				final Statement statement = connection.createStatement())
-		{
-			final ResultSet rs = statement.executeQuery("SELECT * FROM txn");
-			rs.next();
-			assertEquals(id, rs.getLong("id"));
-			assertThat(rs.next(), equalTo(false));
-		}
+		final DateTime dateTime = DateTime.now();
+		final Currency currency = Currency.getInstance("GBP");
+		final BigDecimal gross = BigDecimal.valueOf(12.34);
+		final BigDecimal fee = BigDecimal.valueOf(23.45);
+		callback.createTxn(
+				"ref",
+				dateTime,
+				AN_ACCOUNT_NAME,
+				A_TYPE_NAME,
+				TxnStatus.COMPLETED,
+				currency,
+				gross,
+				fee
+		);
+		verify(txnRepository)
+				.save(entityCaptor.capture());
+		final TxnEntity entity = entityCaptor.getValue();
+		assertEquals("ref", entity.getReference());
+		assertEquals(dateTime, entity.getDateTime());
+		assertEquals(txnType, entity.getType());
+		assertEquals(accountEntity, entity.getAccount());
+		assertEquals(TxnStatus.COMPLETED, entity.getStatus());
+		assertEquals(currency, entity.getCurrency());
+		assertEquals(gross, entity.getGross());
+		assertEquals(fee, entity.getFee());
 	}
 }

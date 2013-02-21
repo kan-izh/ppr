@@ -10,12 +10,12 @@ import static org.junit.Assert.assertThat;
  * @author kan
  * @since 2013-01-30 21:06
  */
-public class TxnTypeTest
+public class TxnTypeEntityTest
 {
 	@Test
 	public void testSetName() throws Exception
 	{
-		final TxnType txnType = new TxnType();
+		final TxnTypeEntity txnType = new TxnTypeEntity();
 		txnType.setId(123456);
 		txnType.setName("a name");
 		assertEquals("a name", txnType.getName());

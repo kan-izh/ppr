@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<databaseChangeLog
+		xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="
+		http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+		">
+	<include file="name/kan/ppr/liquibase/changelog/common/init.xml"/>
+	<changeSet id="test-data-account" author="kan">
+		<loadData tableName="account" file="name/kan/ppr/model/report/account.csv">
+			<column header="id" type="numeric"/>
+			<column header="name" type="string"/>
+		</loadData>
+	</changeSet>
+	<changeSet id="test-data-txn_type" author="kan">
+		<loadData tableName="txn_type" file="name/kan/ppr/model/report/txn_type.csv">
+			<column header="id" type="numeric"/>
+			<column header="name" type="string"/>
+			<column header="parent_id" type="numeric"/>
+		</loadData>
+	</changeSet>
+	<changeSet id="test-data-txn" author="kan">
+		<loadData tableName="txn" file="name/kan/ppr/model/report/txn.csv">
+			<column header="id" type="numeric"/>
+			<column header="account_id" type="numeric"/>
+			<column header="ref" type="string"/>
+			<column header="date_time" type="date"/>
+			<column header="txn_type_id" type="numeric"/>
+			<column header="status" type="numeric"/>
+			<column header="currency" type="numeric"/>
+			<column header="gross" type="numeric"/>
+			<column header="fee" type="numeric"/>
+		</loadData>
+	</changeSet>
+</databaseChangeLog>

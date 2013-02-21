@@ -25,7 +25,7 @@ public class TxnTypeRepositoryImpl implements TxnTypeRepository
 
 	@Transactional(readOnly = false)
 	@Override
-	public TxnType obtainByName(final String name)
+	public TxnTypeEntity obtainByName(final String name)
 	{
 		try
 		{
@@ -40,9 +40,9 @@ public class TxnTypeRepositoryImpl implements TxnTypeRepository
 		}
 	}
 
-	private TxnType createNew(final String name) throws SQLException
+	private TxnTypeEntity createNew(final String name) throws SQLException
 	{
-		final TxnType txnType = new TxnType();
+		final TxnTypeEntity txnType = new TxnTypeEntity();
 		txnType.setId(sequenceGenerator.next());
 		txnType.setName(name);
 		final PreparedStatement st = connection().prepareStatement("INSERT INTO txn_type(id, name) VALUES(?, ?)");
@@ -64,9 +64,9 @@ public class TxnTypeRepositoryImpl implements TxnTypeRepository
 		return stmt.executeQuery();
 	}
 
-	private TxnType map(final ResultSet rs) throws SQLException
+	private TxnTypeEntity map(final ResultSet rs) throws SQLException
 	{
-		final TxnType type = new TxnType();
+		final TxnTypeEntity type = new TxnTypeEntity();
 		type.setId(rs.getLong("id"));
 		type.setName(rs.getString("name"));
 		return type;

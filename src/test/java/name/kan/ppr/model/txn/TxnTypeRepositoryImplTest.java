@@ -3,6 +3,7 @@ package name.kan.ppr.model.txn;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import name.kan.jdbc.TransactionalModule;
+import name.kan.ppr.model.account.AccountModule;
 import name.kan.ppr.test.DbModule;
 import name.kan.ppr.test.LiquibaseWorker;
 import org.junit.Before;
@@ -32,31 +33,32 @@ public class TxnTypeRepositoryImplTest
 		final Injector injector = Guice.createInjector(
 				new DbModule(),
 				new TransactionalModule(),
+				new AccountModule(),
 				new TxnModule());
 		injector.injectMembers(this);
 
-		liquibaseWorker.update("name/kan/ppr/test/liquibase.xml");
+		liquibaseWorker.setUp("name/kan/ppr/test/liquibase.xml");
 	}
 
 	@Test
 	public void testObtainByName() throws Exception
 	{
-		final TxnType type = txnTypeRepository.obtainByName("test");
+		final TxnTypeEntity type = txnTypeRepository.obtainByName("test");
 		assertEquals("test", type.getName());
 	}
 
 	@Test
 	public void testObtainByNameSameName() throws Exception
 	{
-		final TxnType type = txnTypeRepository.obtainByName("test");
-		final TxnType type2 = txnTypeRepository.obtainByName("test");
+		final TxnTypeEntity type = txnTypeRepository.obtainByName("test");
+		final TxnTypeEntity type2 = txnTypeRepository.obtainByName("test");
 		assertEquals(type, type2);
 	}
 	@Test
 	public void testObtainByNameDifferentName() throws Exception
 	{
-		final TxnType type = txnTypeRepository.obtainByName("test");
-		final TxnType type2 = txnTypeRepository.obtainByName("test2");
+		final TxnTypeEntity type = txnTypeRepository.obtainByName("test");
+		final TxnTypeEntity type2 = txnTypeRepository.obtainByName("test2");
 		assertThat(type, not(equalTo(type2)));
 	}
 

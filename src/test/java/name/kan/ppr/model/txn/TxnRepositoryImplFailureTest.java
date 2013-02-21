@@ -1,9 +1,10 @@
-package name.kan.ppr.parser;
+package name.kan.ppr.model.txn;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.InjectMocks;
 import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -20,9 +21,10 @@ import static org.mockito.Mockito.when;
  * @author kan
  * @since 2013-02-02 15:47
  */
-public class JdbcPaypalParserCallbackFaultsTest
+public class TxnRepositoryImplFailureTest
 {
-	JdbcPaypalParserCallback callback = new JdbcPaypalParserCallback();
+	@InjectMocks
+	TxnRepositoryImpl impl = new TxnRepositoryImpl();
 
 	@Rule
 	public ExpectedException expectedException = ExpectedException.none();
@@ -38,7 +40,6 @@ public class JdbcPaypalParserCallbackFaultsTest
 	{
 		MockitoAnnotations.initMocks(this);
 		when(connectionProvider.get()).thenReturn(connection);
-		callback.setConnectionProvider(connectionProvider);
 	}
 
 	@Test
@@ -47,6 +48,6 @@ public class JdbcPaypalParserCallbackFaultsTest
 		final SQLException exception = new SQLException();
 		expectedException.expect(hasProperty("cause", equalTo(exception)));
 		when(connection.prepareStatement(Matchers.<String>any())).thenThrow(exception);
-		callback.createTxn(null, null, null, null, null, null, null);
+		impl.save(new TxnEntity());
 	}
 }

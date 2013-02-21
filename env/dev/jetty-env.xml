@@ -5,7 +5,7 @@
 		<Call name="load">
 			<Arg>
 				<New class="java.io.FileReader">
-					<Arg>env/dev/db.properties</Arg>
+					<Arg>/home/kan/work/ppr/env/dev/db.properties</Arg>
 				</New>
 			</Arg>
 		</Call>

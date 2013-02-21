@@ -17,6 +17,8 @@ public class TxnModule extends AbstractModule
 	@Override
 	protected void configure()
 	{
+		bind(TxnRepository.class)
+				.to(TxnRepositoryImpl.class);
 		bind(TxnTypeRepository.class)
 				.to(TxnTypeRepositoryImpl.class);
 		bind(PaypalParserCallback.class)

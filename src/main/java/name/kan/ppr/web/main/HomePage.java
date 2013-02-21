@@ -1,6 +1,6 @@
 package name.kan.ppr.web.main;
 
-import name.kan.ppr.model.txn.TxnType;
+import name.kan.ppr.model.txn.TxnTypeEntity;
 import name.kan.ppr.model.txn.TxnTypeRepository;
 import org.apache.wicket.markup.html.WebPage;
 import org.slf4j.Logger;
@@ -20,7 +20,7 @@ public class HomePage extends WebPage
 
 	public HomePage()
 	{
-		final TxnType txnType = txnTypeRepository.obtainByName("test");
+		final TxnTypeEntity txnType = txnTypeRepository.obtainByName("test");
 		log.info("type = {}", txnType);
 	}
 }

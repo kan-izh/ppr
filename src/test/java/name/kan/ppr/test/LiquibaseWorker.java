@@ -25,9 +25,11 @@ public class LiquibaseWorker
 	private Provider<Connection> connectionProvider;
 
 	@Transactional(readOnly = false)
-	public void update(final String changeLogFile) throws LiquibaseException
+	public void setUp(final String changeLogFile) throws LiquibaseException
 	{
-		getLiquibase(changeLogFile).update(null);
+		final Liquibase liquibase = getLiquibase(changeLogFile);
+		liquibase.dropAll();
+		liquibase.update(null);
 	}
 
 	private Liquibase getLiquibase(final String changeLogFile)

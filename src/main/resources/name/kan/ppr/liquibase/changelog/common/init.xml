@@ -5,7 +5,7 @@
 		xsi:schemaLocation="
 		http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
 		">
-	<changeSet id="init-1" author="kan">
+	<changeSet id="init-txn_type" author="kan">
 		<createTable tableName="txn_type">
 			<column name="id" type="bigint">
 				<constraints primaryKey="true"/>
@@ -13,11 +13,30 @@
 			<column name="name" type="varchar(255)">
 				<constraints unique="true" nullable="false"/>
 			</column>
+			<column name="parent_id" type="bigint">
+				<constraints references="txn_type(id)" foreignKeyName="fk_txn_type__txn_type__id" />
+			</column>
 		</createTable>
 		<createSequence sequenceName="txn_type_seq"/>
+	</changeSet>
+	<changeSet id="init-account" author="kan">
+		<createTable tableName="account">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true"/>
+			</column>
+			<column name="name" type="varchar(255)">
+				<constraints unique="true" nullable="false"/>
+			</column>
+		</createTable>
+		<createSequence sequenceName="account_seq"/>
+	</changeSet>
+	<changeSet id="init-txn" author="kan">
 		<createTable tableName="txn">
 			<column name="id" type="bigint">
 				<constraints primaryKey="true"/>
+			</column>
+			<column name="account_id" type="bigint">
+				<constraints nullable="false" references="account(id)" foreignKeyName="fk_txn__account__id"/>
 			</column>
 			<column name="ref" type="varchar(255)">
 				<constraints nullable="false"/>

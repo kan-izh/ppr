@@ -1,5 +1,6 @@
 package name.kan.ppr.model.txn;
 
+import name.kan.ppr.model.AbstractIdentifiedEntity;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
@@ -113,5 +114,6 @@ public class AbstractIdentifiedEntityTest
 		assertEquals(hashCodeBefore,  testEntity.hashCode());
 	}
 
-	private static class TestEntity extends AbstractIdentifiedEntity{}
+	private static class TestEntity extends AbstractIdentifiedEntity
+	{}
 }
