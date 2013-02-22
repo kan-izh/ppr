@@ -63,7 +63,7 @@ public class LedgerReportServiceTest
 		assertEquals("Shopping card transactions", shoppingCart.getName());
 		assertEquals("Currency Conversion", currencyConversion.getName());
 		assertEquals("Payments", payments.getName());
-		assertEquals("Bank Accounts", bankAccounts.getName());
+		assertEquals("Withdraw Funds to a Bank Account", bankAccounts.getName());
 
 		final List<LedgerSummaryLine> paymentGroups = payments.getLines();
 		assertEquals(3, paymentGroups.size());

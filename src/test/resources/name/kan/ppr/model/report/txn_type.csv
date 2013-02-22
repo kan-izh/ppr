@@ -1,11 +1,11 @@
-id,name,parent_id
-1,"Shopping card transactions",NULL
-2,"Currency Conversion",NULL
-3,"Payments",NULL
-4,"Bank Accounts",NULL
-20,"Shopping Cart Payment Received",1
-21,"Payment Received",1
-22,"Mobile Payment Received",1
-30,"PayPal Express Checkout Payment Sent",3
-31,"Web Accept Payment Sent",3
-32,"Refund",3
+id,name,parent_id,ordinal
+1,"Shopping card transactions",NULL,10
+2,"Currency Conversion",NULL,20
+3,"Payments",NULL,30
+4,"Withdraw Funds to a Bank Account",NULL,40
+20,"Shopping Cart Payment Received",1,50
+21,"Payment Received",1,60
+22,"Mobile Payment Received",1,70
+30,"PayPal Express Checkout Payment Sent",3,80
+31,"Web Accept Payment Sent",3,90
+32,"Refund",3,100

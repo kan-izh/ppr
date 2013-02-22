@@ -1,5 +1,6 @@
 package name.kan.ppr.model.txn;
 
+import com.google.common.collect.Lists;
 import com.google.inject.name.Named;
 import name.kan.jdbc.SequenceGenerator;
 import name.kan.jdbc.Transactional;
@@ -10,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * @author kan
@@ -34,6 +36,29 @@ public class TxnTypeRepositoryImpl implements TxnTypeRepository
 				return map(rs);
 			else
 				return createNew(name);
+		} catch(SQLException e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	public List<TxnTypeEntity> findTopLevelTypes()
+	{
+		try
+		{
+			final List<TxnTypeEntity> result = Lists.newArrayList();
+			final PreparedStatement ps = connection().prepareStatement(
+					"SELECT *" +
+							" FROM txn_type" +
+							" WHERE parent_id IS NULL" +
+							" ORDER BY ordinal, name");
+			for(final ResultSet rs = ps.executeQuery(); rs.next(); )
+			{
+				final TxnTypeEntity type = map(rs);
+				result.add(type);
+			}
+			return result;
 		} catch(SQLException e)
 		{
 			throw new RuntimeException(e);

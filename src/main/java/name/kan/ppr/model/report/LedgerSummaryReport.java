@@ -1,7 +1,8 @@
 package name.kan.ppr.model.report;
 
-import name.kan.ppr.model.DatePeriod;
+import com.google.common.collect.Lists;
 import name.kan.ppr.model.AbstractIdentifiedEntity;
+import name.kan.ppr.model.DatePeriod;
 
 import java.math.BigDecimal;
 import java.util.Currency;
@@ -21,7 +22,7 @@ public class LedgerSummaryReport extends AbstractIdentifiedEntity
 	private BigDecimal openingBalance;
 	private BigDecimal closingBalance;
 
-	private List<LedgerSummaryGroup> groups;
+	private List<LedgerSummaryGroup> groups = Lists.newArrayList();
 
 	public DatePeriod getDatePeriod()
 	{

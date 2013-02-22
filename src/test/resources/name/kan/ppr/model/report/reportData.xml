@@ -17,6 +17,7 @@
 			<column header="id" type="numeric"/>
 			<column header="name" type="string"/>
 			<column header="parent_id" type="numeric"/>
+			<column header="ordinal" type="numeric"/>
 		</loadData>
 	</changeSet>
 	<changeSet id="test-data-txn" author="kan">
