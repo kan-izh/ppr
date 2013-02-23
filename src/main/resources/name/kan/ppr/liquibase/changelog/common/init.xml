@@ -47,7 +47,7 @@
 			<column name="date_time" type="timestamp">
 				<constraints nullable="false"/>
 			</column>
-			<column name="txn_type_id" type="bigint">
+			<column name="type_id" type="bigint">
 				<constraints nullable="false" references="txn_type(id)" foreignKeyName="fk_txn__txn_type__id" />
 			</column>
 			<column name="status" type="tinyint">

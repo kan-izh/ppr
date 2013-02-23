@@ -21,7 +21,7 @@ public class TxnRepositoryImpl implements TxnRepository
 {
 	private static final String CREATE_TXN_SQL =
 			"INSERT INTO txn(\n" +
-					"            id, ref, date_time, txn_type_id, account_id, status, currency, gross, fee)\n" +
+					"            id, ref, date_time, type_id, account_id, status, currency, gross, fee)\n" +
 					"    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final Calendar UTC_CALENDAR = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 

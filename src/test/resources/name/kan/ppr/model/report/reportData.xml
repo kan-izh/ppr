@@ -26,7 +26,7 @@
 			<column header="account_id" type="numeric"/>
 			<column header="ref" type="string"/>
 			<column header="date_time" type="date"/>
-			<column header="txn_type_id" type="numeric"/>
+			<column header="type_id" type="numeric"/>
 			<column header="status" type="numeric"/>
 			<column header="currency" type="numeric"/>
 			<column header="gross" type="numeric"/>

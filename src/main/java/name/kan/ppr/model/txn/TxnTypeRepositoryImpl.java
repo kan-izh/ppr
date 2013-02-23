@@ -49,10 +49,34 @@ public class TxnTypeRepositoryImpl implements TxnTypeRepository
 		{
 			final List<TxnTypeEntity> result = Lists.newArrayList();
 			final PreparedStatement ps = connection().prepareStatement(
-					"SELECT *" +
+					"SELECT id, parent_id, name" +
 							" FROM txn_type" +
 							" WHERE parent_id IS NULL" +
 							" ORDER BY ordinal, name");
+			for(final ResultSet rs = ps.executeQuery(); rs.next(); )
+			{
+				final TxnTypeEntity type = map(rs);
+				result.add(type);
+			}
+			return result;
+		} catch(SQLException e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	public List<TxnTypeEntity> findChildren(final TxnTypeEntity parent)
+	{
+		try
+		{
+			final List<TxnTypeEntity> result = Lists.newArrayList();
+			final PreparedStatement ps = connection().prepareStatement(
+					"SELECT id, parent_id, name" +
+							" FROM txn_type" +
+							" WHERE parent_id = ?" +
+							" ORDER BY name");
+			ps.setLong(1, parent.getId());
 			for(final ResultSet rs = ps.executeQuery(); rs.next(); )
 			{
 				final TxnTypeEntity type = map(rs);

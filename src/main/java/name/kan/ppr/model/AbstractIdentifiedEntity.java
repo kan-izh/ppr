@@ -29,7 +29,7 @@ public abstract class AbstractIdentifiedEntity implements IdentifiedEntity
 	@Override
 	public String toString()
 	{
-		return getClass().getName() + "#" + id;
+		return getClass().getSimpleName() + "#" + id;
 	}
 
 	@Override

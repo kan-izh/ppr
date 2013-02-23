@@ -11,4 +11,6 @@ public interface TxnTypeRepository
 	TxnTypeEntity obtainByName(String name);
 
 	List<TxnTypeEntity> findTopLevelTypes();
+
+	List<TxnTypeEntity> findChildren(TxnTypeEntity parent);
 }
