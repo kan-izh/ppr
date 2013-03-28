@@ -1,6 +1,7 @@
 package name.kan.ppr.model.report;
 
 import com.google.inject.Guice;
+import com.google.inject.Inject;
 import name.kan.jdbc.TransactionalModule;
 import name.kan.ppr.model.DatePeriod;
 import name.kan.ppr.model.account.AccountModule;
@@ -12,7 +13,7 @@ import org.joda.time.LocalDate;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.google.inject.Inject;
+import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.List;
 
@@ -65,14 +66,19 @@ public class LedgerReportServiceTest
 		assertEquals("Payments", payments.getName());
 		assertEquals("Withdraw Funds to a Bank Account", bankAccounts.getName());
 
-		final List<LedgerSummaryLine> paymentGroups = payments.getLines();
-		assertEquals(3, paymentGroups.size());
-		final LedgerSummaryLine ppExpCo = paymentGroups.get(0);
-		final LedgerSummaryLine refund = paymentGroups.get(1);
-		final LedgerSummaryLine webAccPaySent = paymentGroups.get(2);
+		final List<LedgerSummaryLine> paymentLine = payments.getLines();
+		assertEquals(3, paymentLine.size());
+		final LedgerSummaryLine ppExpCo = paymentLine.get(0);
+		final LedgerSummaryLine refund = paymentLine.get(1);
+		final LedgerSummaryLine webAccPaySent = paymentLine.get(2);
 		assertEquals("PayPal Express Checkout Payment Sent", ppExpCo.getName());
 		assertEquals("Refund", refund.getName());
 		assertEquals("Web Accept Payment Sent", webAccPaySent.getName());
+
+		final LedgerSummaryLine shoppingCartPayments = shoppingCart.getLines().get(2);
+		assertEquals("Shopping Cart Payment Received", shoppingCartPayments.getName());
+		assertEquals(new BigDecimal("107.00"), shoppingCartPayments.getGross());
+		assertEquals(new BigDecimal("4.44"), shoppingCartPayments.getFee());
 	}
 
 }

@@ -56,10 +56,10 @@
 			<column name="currency" type="int">
 				<constraints nullable="false"/>
 			</column>
-			<column name="gross" type="decimal(10, 4)">
+			<column name="gross" type="decimal(10, 2)">
 				<constraints nullable="false"/>
 			</column>
-			<column name="fee" type="decimal(10, 4)">
+			<column name="fee" type="decimal(10, 2)">
 				<constraints nullable="false"/>
 			</column>
 		</createTable>
