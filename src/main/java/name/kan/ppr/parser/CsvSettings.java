@@ -6,7 +6,7 @@ package name.kan.ppr.parser;
  */
 public class CsvSettings
 {
-	private char delimiter;
+	private char delimiter = ',';
 
 	public char getDelimiter()
 	{

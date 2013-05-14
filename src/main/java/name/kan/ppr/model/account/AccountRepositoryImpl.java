@@ -85,12 +85,5 @@ public class AccountRepositoryImpl implements AccountRepository
 	{
 		account.setId(rs.getLong("id"));
 		account.setName(rs.getString("name"));
-		final long parentId = rs.getLong("parent_id");
-		if(!rs.wasNull())
-		{
-			final AccountEntity parentAccount = new AccountEntity();
-			parentAccount.setId(parentId);
-			account.setParentAccount(parentAccount);
-		}
 	}
 }

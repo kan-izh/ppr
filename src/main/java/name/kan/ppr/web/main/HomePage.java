@@ -1,12 +1,9 @@
 package name.kan.ppr.web.main;
 
-import name.kan.ppr.model.txn.TxnTypeEntity;
-import name.kan.ppr.model.txn.TxnTypeRepository;
+import name.kan.ppr.web.csv.UploadCsvFormPanel;
 import org.apache.wicket.markup.html.WebPage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.inject.Inject;
 
 /**
  * @author kan
@@ -15,12 +12,11 @@ import javax.inject.Inject;
 public class HomePage extends WebPage
 {
 	private static final Logger log = LoggerFactory.getLogger(HomePage.class);
-	@Inject
-	private TxnTypeRepository txnTypeRepository;
+	private static final long serialVersionUID = 992503113234757275L;
 
 	public HomePage()
 	{
-		final TxnTypeEntity txnType = txnTypeRepository.obtainByName("test");
-		log.info("type = {}", txnType);
+		add(new UploadCsvFormPanel("upload"));
 	}
+
 }

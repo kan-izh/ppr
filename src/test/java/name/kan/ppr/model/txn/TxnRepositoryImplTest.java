@@ -1,6 +1,7 @@
 package name.kan.ppr.model.txn;
 
 import com.google.inject.Injector;
+import name.kan.guice.slf4j.Slf4jLoggerInjectorModule;
 import name.kan.jdbc.TransactionalModule;
 import name.kan.ppr.model.account.AccountEntity;
 import name.kan.ppr.model.account.AccountModule;
@@ -49,6 +50,7 @@ public class TxnRepositoryImplTest
 	{
 		MockitoAnnotations.initMocks(this);
 		final Injector injector = createInjector(
+				new Slf4jLoggerInjectorModule(),
 				new DbModule(),
 				new AccountModule(),
 				new TxnModule(),

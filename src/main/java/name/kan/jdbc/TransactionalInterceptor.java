@@ -1,7 +1,9 @@
 package name.kan.jdbc;
 
+import name.kan.guice.slf4j.InjectLogger;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.slf4j.Logger;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -21,21 +23,31 @@ public class TransactionalInterceptor implements MethodInterceptor
 	@Inject
 	private TransactionalConnectionProviderImpl connectionProvider;
 
+	@InjectLogger
+	private Logger logger;
+
 	@Override
 	public Object invoke(final MethodInvocation mi) throws Throwable
 	{
 
 		final Connection currentConnection = connectionProvider.getCurrentConnection();
 		if(currentConnection != null)
-			throw new UnsupportedOperationException("TODO");
+			return supportConnection(mi, currentConnection);
 		else
 			return openConnection(mi);
+	}
+
+	private Object supportConnection(final MethodInvocation mi, final Connection connection) throws Throwable
+	{
+		logger.debug("Support connection {}", connection);
+		return proceed(mi, connection);
 	}
 
 	private Object openConnection(final MethodInvocation mi) throws Throwable
 	{
 		try(final Connection connection = dataSource.getConnection())
 		{
+			logger.debug("Open connection {}", connection);
 			prepareConnection(mi, connection);
 			connectionProvider.setCurrentConnection(connection);
 
@@ -45,6 +57,7 @@ public class TransactionalInterceptor implements MethodInterceptor
 		}
 		finally
 		{
+			logger.debug("Closed connection");
 			connectionProvider.setCurrentConnection(null);
 		}
 	}
@@ -56,6 +69,7 @@ public class TransactionalInterceptor implements MethodInterceptor
 			return mi.proceed();
 		} catch(Throwable t)
 		{
+			logger.debug("Exception thrown in the connection {}: {}", connection, t.toString());
 			processException(mi, connection, t);
 			throw t;
 		}

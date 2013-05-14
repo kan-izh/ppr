@@ -2,6 +2,7 @@ package name.kan.ppr.model.report;
 
 import com.google.inject.Guice;
 import com.google.inject.Inject;
+import name.kan.guice.slf4j.Slf4jLoggerInjectorModule;
 import name.kan.jdbc.TransactionalModule;
 import name.kan.ppr.model.DatePeriod;
 import name.kan.ppr.model.account.AccountModule;
@@ -36,6 +37,7 @@ public class LedgerReportServiceTest
 	public static void setUpClass() throws Exception
 	{
 		Guice.createInjector(
+				new Slf4jLoggerInjectorModule(),
 				new DbModule(),
 				new TransactionalModule(),
 				new AccountModule(),

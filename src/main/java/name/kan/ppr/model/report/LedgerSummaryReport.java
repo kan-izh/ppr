@@ -19,8 +19,8 @@ public class LedgerSummaryReport extends AbstractIdentifiedEntity
 	private DatePeriod datePeriod;
 	private Currency currency;
 
-	private BigDecimal openingBalance;
-	private BigDecimal closingBalance;
+	private BigDecimal openingBalanceAmount;
+	private BigDecimal closingBalanceAmount;
 
 	private List<LedgerSummaryGroup> groups = Lists.newArrayList();
 
@@ -44,33 +44,28 @@ public class LedgerSummaryReport extends AbstractIdentifiedEntity
 		this.currency = currency;
 	}
 
-	public BigDecimal getOpeningBalance()
+	public BigDecimal getOpeningBalanceAmount()
 	{
-		return openingBalance;
+		return openingBalanceAmount;
 	}
 
-	public void setOpeningBalance(final BigDecimal openingBalance)
+	public void setOpeningBalanceAmount(final BigDecimal openingBalanceAmount)
 	{
-		this.openingBalance = openingBalance;
+		this.openingBalanceAmount = openingBalanceAmount;
 	}
 
-	public BigDecimal getClosingBalance()
+	public BigDecimal getClosingBalanceAmount()
 	{
-		return closingBalance;
+		return closingBalanceAmount;
 	}
 
-	public void setClosingBalance(final BigDecimal closingBalance)
+	public void setClosingBalanceAmount(final BigDecimal closingBalanceAmount)
 	{
-		this.closingBalance = closingBalance;
+		this.closingBalanceAmount = closingBalanceAmount;
 	}
 
 	public List<LedgerSummaryGroup> getGroups()
 	{
 		return groups;
-	}
-
-	public void setGroups(final List<LedgerSummaryGroup> groups)
-	{
-		this.groups = groups;
 	}
 }

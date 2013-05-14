@@ -16,7 +16,7 @@ public class GuiceBootstrap extends GuiceServletContextListener
 	protected Injector getInjector()
 	{
 		return Guice.createInjector(
-				new WebModule()
+				new WebInfModule()
 		);
 	}
 }

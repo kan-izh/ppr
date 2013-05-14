@@ -3,6 +3,7 @@ package name.kan.jdbc;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import name.kan.guice.slf4j.Slf4jLoggerInjectorModule;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -18,6 +19,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -47,6 +49,7 @@ public class TransactionalConnectionProviderTest
 	{
 		MockitoAnnotations.initMocks(this);
 		final Injector injector = Guice.createInjector(
+				new Slf4jLoggerInjectorModule(),
 				new TransactionalModule(),
 				new TestModule(dataSource)
 		);
@@ -129,10 +132,21 @@ public class TransactionalConnectionProviderTest
 		verify(connection).close();
 	}
 
+	@Test
+	public void testRecursive() throws Exception
+	{
+		someService.recursive(5);
+		verify(connection, times(1)).commit();
+		verify(connection, times(1)).close();
+	}
+
 	public static class SomeService
 	{
 		@Inject
 		private Provider<Connection> connectionProvider;
+
+		@Inject
+		private SomeService self;
 
 		@Transactional
 		public void transactionalMethod()
@@ -146,6 +160,20 @@ public class TransactionalConnectionProviderTest
 			}
 		}
 
+		@Transactional
+		public void recursive(int i)
+		{
+			if(i == 0)
+				return;
+			try
+			{
+				connectionProvider.get().createStatement();
+			} catch(SQLException e)
+			{
+				throw new AssertionError(e);
+			}
+			recursive(i - 1);
+		}
 		public void notAnnotated()
 		{
 			try

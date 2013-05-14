@@ -9,7 +9,7 @@ import org.apache.wicket.protocol.http.WicketFilter;
  * @author kan
  * @since 2013-01-24 21:57
  */
-public class WebModule extends ServletModule
+public class WebInfModule extends ServletModule
 {
 	private static final String WICKET_PATTERN = "/*";
 

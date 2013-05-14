@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+</head>
+<body>
+<wicket:panel>
+	<table class="ledgerReport">
+		<thead>
+		<tr>
+			<td></td>
+			<td></td>
+			<td>Debit</td>
+			<td>Credit</td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		</thead>
+		<tbody>
+		<tr class="openingBalance">
+			<th>Opening balance brought forward as at</th>
+			<td wicket:id="openingBalanceDate">01/04/2011</td>
+			<td class="money" wicket:id="openingBalanceAmount">£227.63</td>
+		</tr>
+		<wicket:container wicket:id="groups">
+			<tr>
+				<th wicket:id="name">Shopping cart transactions</th>
+				<td></td>
+				<td></td>
+				<td></td>
+				<th><wicket:container wicket:id="header.net">Net</wicket:container></th>
+				<th><wicket:container wicket:id="header.fee">Fees</wicket:container></th>
+				<th><wicket:container wicket:id="header.total">Total</wicket:container></th>
+			</tr>
+			<tr wicket:id="lines">
+				<th wicket:id="name">Shopping cart payment received</th>
+				<td></td>
+				<td class="money" wicket:id="debit">£5562.43</td>
+				<td class="money" wicket:id="credit"></td>
+				<td class="money" wicket:id="net"></td>
+				<td class="money" wicket:id="fee"></td>
+				<td class="money" wicket:id="total"></td>
+			</tr>
+		</wicket:container>
+		<tr class="closingBalance">
+			<th>Closing balance carried forward as at</th>
+			<td wicket:id="closingBalanceDate">01/04/2011</td>
+			<td class="money" wicket:id="closingBalanceAmount">£227.63</td>
+		</tr>
+		</tbody>
+	</table>
+</wicket:panel>
+</body>
+</html>

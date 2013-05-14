@@ -1,7 +1,5 @@
 package name.kan.ppr.web.app;
 
-import name.kan.jdbc.TransactionalModule;
-import name.kan.ppr.model.txn.TxnModule;
 import name.kan.ppr.web.main.HomePage;
 import org.apache.wicket.Page;
 import org.apache.wicket.guice.GuiceComponentInjector;
@@ -17,11 +15,9 @@ public class PprWebApplication extends WebApplication
 	protected void init()
 	{
 		super.init();
-		final GuiceComponentInjector injector = new GuiceComponentInjector(this,
-				new TransactionalModule(),
-				new TxnModule(),
-				new DbModule()
-				);
+		final GuiceComponentInjector injector = new GuiceComponentInjector(
+				this,
+				new PprWebApplicationModule());
 		getComponentInstantiationListeners().add(injector);
 	}
 
