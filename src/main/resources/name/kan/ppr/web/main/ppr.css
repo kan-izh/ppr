@@ -1,0 +1,36 @@
+table.ledgerReport
+{
+	border-collapse:collapse;
+}
+table.ledgerReport th, table.ledgerReport td
+{
+	border:1px solid grey;
+	padding: 0.2em;
+}
+table.ledgerReport .group th
+{
+	text-transform: uppercase;
+}
+table.ledgerReport .group th,
+table.ledgerReport .openingBalance th,
+table.ledgerReport .closingBalance th
+{
+	text-align:left;
+	font-weight: normal;
+}
+table.ledgerReport .openingBalance th,
+table.ledgerReport .closingBalance th
+{
+	padding-top: 1em;
+	padding-bottom: 1em;
+}
+table.ledgerReport .line th
+{
+	text-align:left;
+	padding-left: 3em;
+	font-weight: normal;
+}
+.money
+{
+	text-align:right;
+}

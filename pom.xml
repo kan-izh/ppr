@@ -33,6 +33,12 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- Wicket -->
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-datetime</artifactId>
+			<version>${wicket.version}</version>
+		</dependency>
 		<!-- IoC -->
 		<dependency>
 			<groupId>org.apache.wicket</groupId>

@@ -75,7 +75,7 @@ public class TxnTypeRepositoryImpl implements TxnTypeRepository
 					"SELECT id, parent_id, name" +
 							" FROM txn_type" +
 							" WHERE parent_id = ?" +
-							" ORDER BY name");
+							" ORDER BY ordinal, name");
 			ps.setLong(1, parent.getId());
 			for(final ResultSet rs = ps.executeQuery(); rs.next(); )
 			{

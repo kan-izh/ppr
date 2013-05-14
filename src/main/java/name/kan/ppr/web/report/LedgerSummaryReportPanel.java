@@ -30,7 +30,7 @@ public class LedgerSummaryReportPanel extends Panel
 	public LedgerSummaryReportPanel(final String id, final IModel<LedgerSummaryReport> model)
 	{
 		super(id, CompoundPropertyModel.of(model));
-		add(new Label("openingBalanceDate", ""));
+		add(new Label("datePeriod.from"));
 		final IModel<Currency> currency = PropertyModel.of(model, "currency");
 		final Locale locale = getLocale();
 		add(new Label("openingBalanceAmount", MoneyModel.of(
@@ -38,7 +38,7 @@ public class LedgerSummaryReportPanel extends Panel
 				PropertyModel.<BigDecimal>of(model, "openingBalanceAmount"),
 				currency)
 		));
-		add(new Label("closingBalanceDate", ""));
+		add(new Label("datePeriod.to"));
 		add(new Label("closingBalanceAmount", MoneyModel.of(
 				locale,
 				PropertyModel.<BigDecimal>of(model, "closingBalanceAmount"),

@@ -3,9 +3,19 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <head>
 	<title>Paypal report</title>
+	<wicket:remove>
+		<link rel ="stylesheet" type="text/css" href="ppr.css" title="style">
+	</wicket:remove>
 </head>
 <body>
 <h1>Paypal report</h1>
 <wicket:container wicket:id="upload"/>
+<form wicket:id="report" action="" method="get">
+	<p wicket:id="feedbackPanel"></p>
+	<p><label for="from" wicket:for="from"><wicket:label>From: </wicket:label></label><span id="from" wicket:id="from"></span></p>
+	<p><label for="to" wicket:for="to"><wicket:label>To: </wicket:label></label><span id="to" wicket:id="to"></span></p>
+	<p><input type="submit" value="Build report"/></p>
+	<wicket:container wicket:id="report"/>
+</form>
 </body>
 </html>
