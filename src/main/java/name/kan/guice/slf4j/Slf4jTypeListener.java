@@ -2,7 +2,6 @@ package name.kan.guice.slf4j;
 
 import com.google.inject.MembersInjector;
 import com.google.inject.TypeLiteral;
-import com.google.inject.internal.Errors;
 import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
 import org.slf4j.Logger;
@@ -41,16 +40,13 @@ class Slf4jTypeListener implements TypeListener
 		@Override
 		public void injectMembers(final Object instance)
 		{
-			final Errors errors = new Errors();
 			try
 			{
 				field.set(instance, logger);
 			} catch(IllegalAccessException e)
 			{
-				errors.errorInUserCode(e, "Error injecting %s into field %s.%n"
-						+ " Reason: %s", logger, field, e);
+				throw new AssertionError(e);
 			}
-			errors.throwConfigurationExceptionIfErrorsExist();
 		}
 	}
 }

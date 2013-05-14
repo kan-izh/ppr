@@ -1,6 +1,5 @@
 package name.kan.ppr.model;
 
-import com.google.common.base.Objects;
 import org.joda.time.LocalDate;
 
 import java.io.Serializable;
@@ -58,9 +57,6 @@ public class DatePeriod implements Serializable
 	@Override
 	public String toString()
 	{
-		return Objects.toStringHelper(this)
-				.add("from", from)
-				.add("to", to)
-				.toString();
+		return "[" + from + "," + to + "]";
 	}
 }

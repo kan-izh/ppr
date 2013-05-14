@@ -34,4 +34,16 @@ public class TxnTypeRepositoryImplFailureTest
 		txnTypeRepository.obtainByName("name");
 	}
 
+	@Test(expected = RuntimeException.class)
+	public void testFindTopLevelTypes() throws Exception
+	{
+		txnTypeRepository.findTopLevelTypes();
+	}
+
+	@Test(expected = RuntimeException.class)
+	public void testFindChildren() throws Exception
+	{
+		txnTypeRepository.findChildren(new TxnTypeEntity());
+	}
+
 }

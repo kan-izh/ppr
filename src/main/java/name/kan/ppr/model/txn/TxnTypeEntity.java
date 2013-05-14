@@ -9,16 +9,4 @@ import name.kan.ppr.model.AbstractNamedEntity;
 public class TxnTypeEntity extends AbstractNamedEntity
 {
 	private static final long serialVersionUID = -8110368444021167747L;
-
-	private TxnTypeEntity parentType;
-
-	public TxnTypeEntity getParentType()
-	{
-		return parentType;
-	}
-
-	public void setParentType(final TxnTypeEntity parentType)
-	{
-		this.parentType = parentType;
-	}
 }
