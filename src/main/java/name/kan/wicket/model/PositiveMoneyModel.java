@@ -1,4 +1,4 @@
-package name.kan.ppr.web.wicket.model;
+package name.kan.wicket.model;
 
 import org.apache.wicket.model.IModel;
 
