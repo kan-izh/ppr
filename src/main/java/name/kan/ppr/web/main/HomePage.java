@@ -5,7 +5,9 @@ import name.kan.ppr.model.report.LedgerReportService;
 import name.kan.ppr.model.report.LedgerSummaryReport;
 import name.kan.ppr.web.csv.UploadCsvFormPanel;
 import name.kan.ppr.web.report.LedgerSummaryReportPanel;
+import name.kan.wicket.behavior.HideNullModelBehavior;
 import org.apache.wicket.extensions.yui.calendar.DateField;
+import org.apache.wicket.feedback.ContainerFeedbackMessageFilter;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.WebPage;
@@ -55,10 +57,10 @@ public class HomePage extends WebPage
 		{
 			super(report);
 			setModel(CompoundPropertyModel.of(Model.of(this)));
-			add(new FeedbackPanel("feedbackPanel"));
+			add(new FeedbackPanel("feedbackPanel", new ContainerFeedbackMessageFilter(this)));
 			add(new DateField("from").setRequired(true));
 			add(new DateField("to").setRequired(true));
-			add(new LedgerSummaryReportPanel("report", reportModel));
+			add(new LedgerSummaryReportPanel("report", reportModel).add(HideNullModelBehavior.INSTANCE));
 		}
 
 		@Override
@@ -69,5 +71,7 @@ public class HomePage extends WebPage
 			final LedgerSummaryReport report = ledgerReportService.createReport(period, currency);
 			reportModel.setObject(report);
 		}
+
 	}
+
 }

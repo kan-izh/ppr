@@ -2,6 +2,7 @@ package name.kan.ppr.web.csv;
 
 import name.kan.ppr.parser.PaypalCsvParser;
 import name.kan.ppr.parser.PaypalParserCallback;
+import org.apache.wicket.feedback.ContainerFeedbackMessageFilter;
 import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
@@ -40,7 +41,7 @@ public class UploadCsvFormPanel extends Panel
 		public UploadCsvForm(final String id)
 		{
 			super(id);
-			add(new FeedbackPanel("feedbackPanel"));
+			add(new FeedbackPanel("feedbackPanel", new ContainerFeedbackMessageFilter(this)));
 			add(csvFile.setRequired(true));
 		}
 

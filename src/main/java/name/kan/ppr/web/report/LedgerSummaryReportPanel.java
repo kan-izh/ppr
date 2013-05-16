@@ -88,7 +88,7 @@ public class LedgerSummaryReportPanel extends Panel
 			final IModel<BigDecimal> fee = PropertyModel.of(item.getModel(), "fee");
 			item.add(new Label("debit", MoneyModel.of(getLocale(), new PositiveMoneyModel(true, gross), currency)));
 			item.add(new Label("credit", MoneyModel.of(getLocale(), new PositiveMoneyModel(false, gross), currency)));
-			item.add(new Label("fee", fee));
+			item.add(new Label("fee", MoneyModel.of(getLocale(), fee, currency)));
 			final AbstractReadOnlyModel<BigDecimal> net = new AbstractReadOnlyModel<BigDecimal>()
 			{
 				private static final long serialVersionUID = 7313288604196058422L;
