@@ -25,6 +25,7 @@
 				<Set name="password"><Ref id="db.password"/></Set>
 				<Set name="minConnectionsPerPartition">1</Set>
 				<Set name="maxConnectionsPerPartition">5</Set>
+				<Set name="closeConnectionWatch">true</Set>
 			</New>
 		</Arg>
 	</New>

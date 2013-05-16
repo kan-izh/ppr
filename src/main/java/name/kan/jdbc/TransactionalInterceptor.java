@@ -10,6 +10,9 @@ import javax.sql.DataSource;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
 * @author kan
@@ -25,6 +28,8 @@ public class TransactionalInterceptor implements MethodInterceptor
 
 	@InjectLogger
 	private Logger logger;
+
+	private final ConcurrentMap<Method, Map<Class<? extends Throwable>, Boolean>> needsRollbackCache = new ConcurrentHashMap<>();
 
 	@Override
 	public Object invoke(final MethodInvocation mi) throws Throwable
@@ -57,7 +62,8 @@ public class TransactionalInterceptor implements MethodInterceptor
 		}
 		finally
 		{
-			logger.debug("Closed connection");
+			if(logger.isDebugEnabled())
+				logger.debug("Closed connection {}", connectionProvider.getCurrentConnection());
 			connectionProvider.setCurrentConnection(null);
 		}
 	}
@@ -85,21 +91,42 @@ public class TransactionalInterceptor implements MethodInterceptor
 
 	private boolean needsRollback(final Throwable t, final MethodInvocation mi)
 	{
-		final Method method = mi.getMethod();
+		return needsRollbackCached(mi.getMethod(), t.getClass());
+	}
+
+	private boolean needsRollbackCached(final Method method, final Class<? extends Throwable> cls)
+	{
+		Map<Class<? extends Throwable>, Boolean> classToResult = needsRollbackCache.get(method);
+		if(classToResult == null)
+		{
+			needsRollbackCache.putIfAbsent(method, new ConcurrentHashMap<Class<? extends Throwable>, Boolean>());
+			classToResult = needsRollbackCache.get(method);
+		}
+		Boolean result = classToResult.get(cls);
+		if(result == null)
+		{
+			result = needsRollback(method, cls);
+			classToResult.put(cls, needsRollback(method, cls));
+		}
+		return result;
+	}
+
+	private boolean needsRollback(final Method method, final Class<? extends Throwable> cls)
+	{
 		final Transactional annotation = method.getAnnotation(Transactional.class);
 		for(final Class<? extends Exception> e : annotation.ignore())
 		{
-			if(e.isAssignableFrom(t.getClass()))
+			if(e.isAssignableFrom(cls))
 				return false;
 		}
 		for(final Class<? extends Exception> e : annotation.rollbackOn())
 		{
-			if(e.isAssignableFrom(t.getClass()))
+			if(e.isAssignableFrom(cls))
 				return true;
 		}
 		for(final Class<?> e : method.getExceptionTypes())
 		{
-			if(e.isAssignableFrom(t.getClass()))
+			if(e.isAssignableFrom(cls))
 				return false;
 		}
 		return true;
@@ -108,7 +135,9 @@ public class TransactionalInterceptor implements MethodInterceptor
 	private void prepareConnection(final MethodInvocation mi, final Connection connection) throws SQLException
 	{
 		final Transactional annotation = mi.getMethod().getAnnotation(Transactional.class);
-		connection.setAutoCommit(false);
+		if(connection.getAutoCommit())
+			connection.setAutoCommit(false);
+		connection.rollback();
 		connection.setReadOnly(annotation.readOnly());
 	}
 }
