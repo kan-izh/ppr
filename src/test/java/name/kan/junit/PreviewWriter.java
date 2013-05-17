@@ -35,7 +35,7 @@ public class PreviewWriter extends TestWatcher
 		final Class<?> clazz = description.getTestClass();
 		final File classLocation = new File(clazz.getProtectionDomain().getCodeSource().getLocation().getFile());
 		final File pagesFile = new File(classLocation, name);
-		final File classFile = new File(pagesFile, getClass().getName());
+		final File classFile = new File(pagesFile, clazz.getName());
 		classFile.mkdirs();
 		final File testFile = new File(classFile, description.getMethodName() + ".html");
 		try(final FileOutputStream fos = new FileOutputStream(testFile);
