@@ -83,10 +83,16 @@ public class TransactionalInterceptor implements MethodInterceptor
 
 	private void processException(final MethodInvocation mi, final Connection connection, final Throwable t) throws SQLException
 	{
-		if(needsRollback(t, mi))
-			connection.rollback();
-		else
-			connection.commit();
+		try
+		{
+			if(needsRollback(t, mi))
+				connection.rollback();
+			else
+				connection.commit();
+		} catch(SQLException e)
+		{
+			logger.error("Cannot process exception", e);
+		}
 	}
 
 	private boolean needsRollback(final Throwable t, final MethodInvocation mi)

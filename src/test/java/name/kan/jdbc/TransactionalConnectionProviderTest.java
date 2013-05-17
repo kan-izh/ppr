@@ -19,6 +19,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -92,7 +93,7 @@ public class TransactionalConnectionProviderTest
 			someService.throwsUnexpectedException();
 		}
 		catch(RuntimeException ignore){}
-		verify(connection).rollback();
+		verify(connection, never()).commit();
 		verify(connection).close();
 	}
 
@@ -128,7 +129,7 @@ public class TransactionalConnectionProviderTest
 			someService.throwsAnError();
 		}
 		catch(ClassFormatError ignore){}
-		verify(connection).rollback();
+		verify(connection, never()).commit();
 		verify(connection).close();
 	}
 
