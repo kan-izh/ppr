@@ -20,5 +20,5 @@ public interface PaypalParserCallback
 			TxnStatus status,
 			Currency currency,
 			BigDecimal gross,
-			BigDecimal fee);
+			BigDecimal fee, final boolean credit);
 }

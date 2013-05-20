@@ -4,7 +4,6 @@ import name.kan.ppr.model.report.LedgerSummaryGroup;
 import name.kan.ppr.model.report.LedgerSummaryLine;
 import name.kan.ppr.model.report.LedgerSummaryReport;
 import name.kan.wicket.model.MoneyModel;
-import name.kan.wicket.model.PositiveMoneyModel;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -86,8 +85,26 @@ public class LedgerSummaryReportPanel extends Panel
 			item.add(new Label("name"));
 			final IModel<BigDecimal> gross = PropertyModel.of(item.getModel(), "gross");
 			final IModel<BigDecimal> fee = PropertyModel.of(item.getModel(), "fee");
-			item.add(new Label("debit", MoneyModel.of(getLocale(), new PositiveMoneyModel(true, gross), currency)));
-			item.add(new Label("credit", MoneyModel.of(getLocale(), new PositiveMoneyModel(false, gross), currency)));
+			item.add(new Label("debit", MoneyModel.of(getLocale(), gross, currency))
+			{
+				private static final long serialVersionUID = -8590702800843929986L;
+
+				@Override
+				public boolean isVisible()
+				{
+					return item.getModelObject().isCredit();
+				}
+			});
+			item.add(new Label("credit", MoneyModel.of(getLocale(), gross, currency))
+			{
+				private static final long serialVersionUID = 3530989583162930865L;
+
+				@Override
+				public boolean isVisible()
+				{
+					return !item.getModelObject().isCredit();
+				}
+			});
 			item.add(new Label("fee", MoneyModel.of(getLocale(), fee, currency)));
 			final AbstractReadOnlyModel<BigDecimal> net = new AbstractReadOnlyModel<BigDecimal>()
 			{
@@ -104,7 +121,20 @@ public class LedgerSummaryReportPanel extends Panel
 				}
 			};
 			item.add(new Label("net", MoneyModel.of(getLocale(), net, currency)));
-			item.add(new Label("total", MoneyModel.of(getLocale(), gross, currency)));
+			item.add(new Label("total", MoneyModel.of(getLocale(), new AbstractReadOnlyModel<BigDecimal>()
+			{
+				private static final long serialVersionUID = 6383130785800769785L;
+
+				@Override
+				public BigDecimal getObject()
+				{
+					final BigDecimal grossVal = gross.getObject();
+					final BigDecimal feeVal = fee.getObject();
+					if(grossVal == null || feeVal == null)
+						return null;
+					return grossVal;
+				}
+			}, currency)));
 		}
 	}
 }

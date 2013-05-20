@@ -22,6 +22,7 @@ public class TxnEntity extends AbstractIdentifiedEntity
 	private Currency currency;
 	private BigDecimal gross;
 	private BigDecimal fee;
+	private boolean credit;
 
 	public AccountEntity getAccount()
 	{
@@ -101,5 +102,15 @@ public class TxnEntity extends AbstractIdentifiedEntity
 	public void setFee(final BigDecimal fee)
 	{
 		this.fee = fee;
+	}
+
+	public boolean isCredit()
+	{
+		return credit;
+	}
+
+	public void setCredit(final boolean credit)
+	{
+		this.credit = credit;
 	}
 }

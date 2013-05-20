@@ -27,7 +27,7 @@ public class JdbcPaypalParserCallback implements PaypalParserCallback
 
 	@Transactional(readOnly = false)
 	@Override
-	public void createTxn(final String txnRef, final DateTime dateTime, final String accountName, final String type, final TxnStatus status, final Currency currency, final BigDecimal gross, final BigDecimal fee)
+	public void createTxn(final String txnRef, final DateTime dateTime, final String accountName, final String type, final TxnStatus status, final Currency currency, final BigDecimal gross, final BigDecimal fee, final boolean credit)
 	{
 		final TxnEntity entity = new TxnEntity();
 		entity.setReference(txnRef);
@@ -38,6 +38,7 @@ public class JdbcPaypalParserCallback implements PaypalParserCallback
 		entity.setCurrency(currency);
 		entity.setGross(gross);
 		entity.setFee(fee);
+		entity.setCredit(credit);
 		txnRepository.save(entity);
 	}
 }

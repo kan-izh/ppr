@@ -76,6 +76,7 @@ public class TxnRepositoryImplTest
 		entity.setCurrency(GBP);
 		entity.setGross(BigDecimal.valueOf(12.34));
 		entity.setFee(BigDecimal.valueOf(1.23));
+		entity.setCredit(true);
 		impl.save(entity);
 		try(
 				final Connection connection = dataSource.getConnection();
@@ -84,6 +85,7 @@ public class TxnRepositoryImplTest
 			final ResultSet rs = statement.executeQuery("SELECT * FROM txn");
 			rs.next();
 			assertEquals("ref", rs.getString("ref"));
+			assertEquals(true, rs.getBoolean("credit"));
 			assertThat(rs.next(), equalTo(false));
 		}
 	}

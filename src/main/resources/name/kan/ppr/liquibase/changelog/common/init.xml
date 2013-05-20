@@ -62,6 +62,9 @@
 			<column name="fee" type="decimal(10, 2)">
 				<constraints nullable="false"/>
 			</column>
+			<column name="credit" type="boolean">
+				<constraints nullable="false"/>
+			</column>
 		</createTable>
 		<createSequence sequenceName="txn_seq"/>
 	</changeSet>

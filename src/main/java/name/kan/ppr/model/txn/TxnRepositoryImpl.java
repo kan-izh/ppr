@@ -19,10 +19,10 @@ import java.util.TimeZone;
  */
 public class TxnRepositoryImpl implements TxnRepository
 {
-	private static final String CREATE_TXN_SQL =
+	private static final String INSERT_TXN_SQL =
 			"INSERT INTO txn(\n" +
-					"            id, ref, date_time, type_id, account_id, status, currency, gross, fee)\n" +
-					"    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+					"            id, ref, date_time, type_id, account_id, status, currency, gross, fee, credit)\n" +
+					"    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final Calendar UTC_CALENDAR = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 
 	@Inject
@@ -37,7 +37,7 @@ public class TxnRepositoryImpl implements TxnRepository
 	public void save(final TxnEntity entity)
 	{
 		final Connection connection = connectionProvider.get();
-		try(final PreparedStatement statement = connection.prepareStatement(CREATE_TXN_SQL))
+		try(final PreparedStatement statement = connection.prepareStatement(INSERT_TXN_SQL))
 		{
 			final long id = txnSequenceGenerator.next();
 			statement.setLong(1, id);
@@ -49,6 +49,7 @@ public class TxnRepositoryImpl implements TxnRepository
 			statement.setInt(7, entity.getCurrency().getNumericCode());
 			statement.setBigDecimal(8, entity.getGross());
 			statement.setBigDecimal(9, entity.getFee());
+			statement.setBoolean(10, entity.isCredit());
 			statement.execute();
 			entity.setId(id);
 		} catch(SQLException e)

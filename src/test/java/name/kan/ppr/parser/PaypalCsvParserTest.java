@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.util.Currency;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
@@ -61,7 +62,8 @@ public class PaypalCsvParserTest
 				TxnStatus.COMPLETED,
 				Currency.getInstance("GBP"),
 				BigDecimal.valueOf(23),
-				BigDecimal.valueOf(-0.98)
+				BigDecimal.valueOf(-0.98),
+				true
 		);
 	}
 
@@ -108,8 +110,8 @@ public class PaypalCsvParserTest
 					eq(status),
 					Matchers.<Currency>any(),
 					Matchers.<BigDecimal>any(),
-					Matchers.<BigDecimal>any()
-			);
+					Matchers.<BigDecimal>any(),
+					anyBoolean());
 	}
 
 	@Test

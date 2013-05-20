@@ -69,17 +69,13 @@ public class LedgerReportServiceTest
 		assertEquals("Withdraw Funds to a Bank Account", bankAccounts.getName());
 
 		final List<LedgerSummaryLine> paymentLine = payments.getLines();
-		assertEquals(3, paymentLine.size());
+		assertEquals(1, paymentLine.size());
 		final LedgerSummaryLine ppExpCo = paymentLine.get(0);
-		final LedgerSummaryLine webAccPaySent = paymentLine.get(1);
-		final LedgerSummaryLine refund = paymentLine.get(2);
-		assertEquals("PayPal Express Checkout Payment Sent", ppExpCo.getName());
-		assertEquals("Web Accept Payment Sent", webAccPaySent.getName());
-		assertEquals("Refund", refund.getName());
+		assertEquals("Web Accept Payment Sent", ppExpCo.getName());
 
 		final LedgerSummaryLine shoppingCartPayments = shoppingCart.getLines().get(0);
 		assertEquals("Shopping Cart Payment Received", shoppingCartPayments.getName());
-		assertEquals(new BigDecimal("107.00"), shoppingCartPayments.getGross());
+		assertEquals(new BigDecimal("-107.00"), shoppingCartPayments.getGross());
 		assertEquals(new BigDecimal("4.44"), shoppingCartPayments.getFee());
 	}
 

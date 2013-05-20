@@ -45,6 +45,7 @@ public class LedgerSummaryReportPanelTest
 		cartTransGroup.getLines().add(cartTransLine2);
 		cartTransLine2.setName("Payment received");
 		cartTransLine2.setGross(new BigDecimal("60"));
+		cartTransLine2.setCredit(true);
 		cartTransLine2.setFee(new BigDecimal("2.44"));
 		final Model<LedgerSummaryReport> model = Model.of(report);
 		tester.startComponentInPage(new LedgerSummaryReportPanel("report", model));

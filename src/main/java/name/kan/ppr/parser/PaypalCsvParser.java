@@ -46,6 +46,7 @@ public class PaypalCsvParser
 		final int currencyCol = findCol(reader, "Currency");
 		final int grossCol = findCol(reader, "Gross");
 		final int feeCol = findCol(reader, "Fee");
+		final int balanceImpactCol = findCol(reader, "Balance Impact");
 		while(reader.readRecord())
 		{
 			final String txnRef = getNotEmpty(reader, txnRefCol);
@@ -59,7 +60,24 @@ public class PaypalCsvParser
 			final Currency currency = parseCurrency(getNotEmpty(reader, currencyCol));
 			final BigDecimal gross = new BigDecimal(getNotEmpty(reader, grossCol));
 			final BigDecimal fee = new BigDecimal(getNotEmpty(reader, feeCol));
-			callback.createTxn(txnRef, dateTime, accountName, type, status, currency, gross, fee);
+			final String balanceImpact = getNotEmpty(reader, balanceImpactCol);
+			final boolean credit;
+			if("Credit".equals(balanceImpact))
+				credit = true;
+			else if("Debit".equals(balanceImpact))
+				credit = false;
+			else
+				throw new IOException("Unexpected balance impact '" + balanceImpact + "'");
+			callback.createTxn(
+					txnRef,
+					dateTime,
+					accountName,
+					type,
+					status,
+					currency,
+					gross,
+					fee,
+					credit);
 		}
 	}
 

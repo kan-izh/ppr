@@ -13,6 +13,7 @@ public class LedgerSummaryLine extends AbstractNamedEntity
 	private static final long serialVersionUID = -8913264695140969488L;
 	private BigDecimal gross;
 	private BigDecimal fee;
+	private boolean credit;
 
 	public BigDecimal getGross()
 	{
@@ -32,5 +33,15 @@ public class LedgerSummaryLine extends AbstractNamedEntity
 	public void setFee(final BigDecimal fee)
 	{
 		this.fee = fee;
+	}
+
+	public void setCredit(final boolean credit)
+	{
+		this.credit = credit;
+	}
+
+	public boolean isCredit()
+	{
+		return credit;
 	}
 }

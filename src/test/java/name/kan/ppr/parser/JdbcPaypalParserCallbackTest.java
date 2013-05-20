@@ -69,8 +69,8 @@ public class JdbcPaypalParserCallbackTest
 				TxnStatus.COMPLETED,
 				currency,
 				gross,
-				fee
-		);
+				fee,
+				true);
 		verify(txnRepository)
 				.save(entityCaptor.capture());
 		final TxnEntity entity = entityCaptor.getValue();
@@ -82,5 +82,6 @@ public class JdbcPaypalParserCallbackTest
 		assertEquals(currency, entity.getCurrency());
 		assertEquals(gross, entity.getGross());
 		assertEquals(fee, entity.getFee());
+		assertEquals(true, entity.isCredit());
 	}
 }
