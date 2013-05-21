@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>name.kan.ppr</groupId>
 	<artifactId>ppr</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.2-SNAPSHOT</version>
 	<name>Paypal reporting tool</name>
 	<packaging>war</packaging>
 	<scm>
