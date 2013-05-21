@@ -11,6 +11,14 @@
 		<developerConnection>scm:git:ssh://git@github.com/kan-izh/ppr.git</developerConnection>
 		<url>https://github.com/kan-izh/ppr.git</url>
 	</scm>
+	<distributionManagement>
+		<repository>
+			<id>kan.home.repo</id>
+			<name>KAN's Repository</name>
+			<url>file:///var/lib/mvn-repo</url>
+		</repository>
+	</distributionManagement>
+
 	<dependencies>
 		<!-- Logging -->
 		<dependency>
