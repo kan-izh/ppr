@@ -6,6 +6,11 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<name>Paypal reporting tool</name>
 	<packaging>war</packaging>
+	<scm>
+		<connection>scm:git:http://github.com/kan-izh/ppr.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/kan-izh/ppr.git</developerConnection>
+		<url>https://github.com/kan-izh/ppr.git</url>
+	</scm>
 	<dependencies>
 		<!-- Logging -->
 		<dependency>
