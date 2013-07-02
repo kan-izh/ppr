@@ -28,21 +28,6 @@
 			<type>war</type>
 			<version>1.0.2</version>
 		</dependency>
-		<dependency>
-			<groupId>postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>${postgresql.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>${logback.version}</version>
-		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -53,36 +38,13 @@
 				<configuration>
 					<container>
 						<containerId>jetty8x</containerId>
-						<dependencies>
-							<dependency>
-								<groupId>postgresql</groupId>
-								<artifactId>postgresql</artifactId>
-							</dependency>
-							<dependency>
-								<groupId>org.slf4j</groupId>
-								<artifactId>slf4j-api</artifactId>
-							</dependency>
-							<dependency>
-								<groupId>ch.qos.logback</groupId>
-								<artifactId>logback-classic</artifactId>
-							</dependency>
-							<dependency>
-								<groupId>ch.qos.logback</groupId>
-								<artifactId>logback-core</artifactId>
-							</dependency>
-						</dependencies>
+						<type>remote</type>
 					</container>
 					<configuration>
-						<type>standalone</type>
+						<type>runtime</type>
 						<properties>
-							<cargo.servlet.port>7000</cargo.servlet.port>
-							<cargo.datasource.datasource.ppr>
-								cargo.datasource.jndi=jdbc/ppr|
-								cargo.datasource.driver=org.postgresql.Driver|
-								cargo.datasource.url=jdbc:postgresql://localhost/ppr|
-								cargo.datasource.username=kan|
-								cargo.datasource.password=kan123
-							</cargo.datasource.datasource.ppr>
+							<cargo.hostname>localhost</cargo.hostname>
+							<cargo.servlet.port>9080</cargo.servlet.port>
 						</properties>
 					</configuration>
 					<deployables>
@@ -101,8 +63,5 @@
 	</build>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<slf4j.version>1.7.2</slf4j.version>
-		<logback.version>1.0.9</logback.version>
-		<postgresql.version>9.1-901.jdbc4</postgresql.version>
 	</properties>
 </project>
