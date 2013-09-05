@@ -1,10 +1,16 @@
 package name.kan.ppr.model.txn;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.TypeLiteral;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 import name.kan.jdbc.PostgresSequenceGenerator;
 import name.kan.jdbc.SequenceGenerator;
 import name.kan.ppr.parser.JdbcPaypalParserCallback;
 import name.kan.ppr.parser.PaypalParserCallback;
+import name.kan.ppr.web.txn.TxnTypeChildrenDataProvider;
+import name.kan.ppr.web.txn.TxnTypeChildrenDataProviderFactory;
+import name.kan.ppr.web.txn.TxnTypeDataProvider;
+import org.apache.wicket.markup.repeater.data.IDataProvider;
 
 import static com.google.inject.name.Names.named;
 
@@ -32,6 +38,10 @@ public class TxnModule extends AbstractModule
 					.annotatedWith(named(seqName))
 					.toInstance(new PostgresSequenceGenerator(seqName));
 		}
-
+		bind(new TypeLiteral<IDataProvider<TxnTypeEntity>>(){})
+				.to(TxnTypeDataProvider.class);
+		install(new FactoryModuleBuilder()
+				.implement(new TypeLiteral<IDataProvider<TxnTypeEntity>>(){}, TxnTypeChildrenDataProvider.class)
+				.build(TxnTypeChildrenDataProviderFactory.class));
 	}
 }

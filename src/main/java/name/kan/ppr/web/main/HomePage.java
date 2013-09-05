@@ -5,6 +5,7 @@ import name.kan.ppr.model.report.LedgerReportService;
 import name.kan.ppr.model.report.LedgerSummaryReport;
 import name.kan.ppr.web.csv.UploadCsvFormPanel;
 import name.kan.ppr.web.report.LedgerSummaryReportPanel;
+import name.kan.ppr.web.txn.TxnTypeListPage;
 import name.kan.wicket.behavior.HideNullModelBehavior;
 import org.apache.wicket.extensions.yui.calendar.DateField;
 import org.apache.wicket.feedback.ContainerFeedbackMessageFilter;
@@ -12,6 +13,7 @@ import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.StatelessForm;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -22,6 +24,7 @@ import org.joda.time.LocalDate;
 import javax.inject.Inject;
 import java.util.Currency;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * @author kan
@@ -35,6 +38,7 @@ public class HomePage extends WebPage
 	{
 		add(new UploadCsvFormPanel("upload"));
 		add(new LedgerSummaryReportDetailsForm("report"));
+		add(new BookmarkablePageLink("showTransactionTypes", TxnTypeListPage.class));
 	}
 
 	@Override
@@ -58,8 +62,8 @@ public class HomePage extends WebPage
 			super(report);
 			setModel(CompoundPropertyModel.of(Model.of(this)));
 			add(new FeedbackPanel("feedbackPanel", new ContainerFeedbackMessageFilter(this)));
-			add(new DateField("from").setRequired(true));
-			add(new DateField("to").setRequired(true));
+			add(new ConfiguredDateField("from").setRequired(true));
+			add(new ConfiguredDateField("to").setRequired(true));
 			add(new LedgerSummaryReportPanel("report", reportModel).add(HideNullModelBehavior.INSTANCE));
 		}
 
@@ -72,6 +76,21 @@ public class HomePage extends WebPage
 			reportModel.setObject(report);
 		}
 
+		private static class ConfiguredDateField extends DateField
+		{
+			private static final long serialVersionUID = 4984738886427980546L;
+
+			public ConfiguredDateField(final String id)
+			{
+				super(id);
+			}
+
+			@Override
+			protected void configure(final Map<String, Object> widgetProperties)
+			{
+				widgetProperties.put("navigator", true);
+			}
+		}
 	}
 
 }

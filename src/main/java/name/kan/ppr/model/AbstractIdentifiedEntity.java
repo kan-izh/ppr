@@ -8,6 +8,7 @@ import name.kan.ppr.model.txn.IdentifiedEntity;
  */
 public abstract class AbstractIdentifiedEntity implements IdentifiedEntity
 {
+	private static final long serialVersionUID = -204454199488414486L;
 	private Long id;
 	private int hashCode;
 

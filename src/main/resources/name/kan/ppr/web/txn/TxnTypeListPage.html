@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+	<title>Paypal report</title>
+	<wicket:link>
+		<link rel ="stylesheet" type="text/css" href="../main/ppr.css" title="style">
+	</wicket:link>
+</head>
+<body>
+<p><a wicket:id="homePageLink">Home</a></p>
+<h1>Transaction types</h1>
+<table class="dataGrid">
+	<tr>
+		<th>Ref</th>
+		<th>Name</th>
+	</tr>
+	<wicket:container wicket:id="types">
+		<tr>
+			<td wicket:id="id">1</td>
+			<td><span wicket:id="name">Payments</span></td>
+		</tr>
+		<tr wicket:id="typeChildren">
+			<td wicket:id="id">22</td>
+			<td>&bull; <span wicket:id="name">Shopping Cart</span></td>
+		</tr>
+	</wicket:container>
+</table>
+</body>
+</html>
