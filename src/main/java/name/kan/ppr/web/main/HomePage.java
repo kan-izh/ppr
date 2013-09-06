@@ -5,7 +5,6 @@ import name.kan.ppr.model.report.LedgerReportService;
 import name.kan.ppr.model.report.LedgerSummaryReport;
 import name.kan.ppr.web.csv.UploadCsvFormPanel;
 import name.kan.ppr.web.report.LedgerSummaryReportPanel;
-import name.kan.ppr.web.txn.TxnTypeListPage;
 import name.kan.wicket.behavior.HideNullModelBehavior;
 import org.apache.wicket.extensions.yui.calendar.DateField;
 import org.apache.wicket.feedback.ContainerFeedbackMessageFilter;
@@ -13,7 +12,6 @@ import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.StatelessForm;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -38,13 +36,6 @@ public class HomePage extends WebPage
 	{
 		add(new UploadCsvFormPanel("upload"));
 		add(new LedgerSummaryReportDetailsForm("report"));
-		add(new BookmarkablePageLink("showTransactionTypes", TxnTypeListPage.class));
-	}
-
-	@Override
-	public void renderHead(IHeaderResponse response)
-	{
-		response.render(CssHeaderItem.forReference(new PackageResourceReference(getClass(), "ppr.css")));
 	}
 
 	private static class LedgerSummaryReportDetailsForm extends StatelessForm<LedgerSummaryReportDetailsForm>

@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author kan
@@ -32,6 +34,22 @@ public class AccountRepositoryImpl implements AccountRepository
 				return map(rs);
 			else
 				return createNew(name);
+		} catch(SQLException e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	public List<AccountEntity> findAccounts()
+	{
+		try
+		{
+			final PreparedStatement statement = connection().prepareStatement("SELECT id, name FROM account ORDER BY name, id");
+			final ArrayList<AccountEntity> list = new ArrayList<>();
+			for(final ResultSet rs = statement.executeQuery(); rs.next();)
+				list.add(map(rs));
+			return list;
 		} catch(SQLException e)
 		{
 			throw new RuntimeException(e);

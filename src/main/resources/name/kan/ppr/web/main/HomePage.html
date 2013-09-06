@@ -3,9 +3,9 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <head>
 	<title>Paypal Reporting tool</title>
-	<wicket:remove>
+	<wicket:link>
 		<link rel ="stylesheet" type="text/css" href="ppr.css" title="style">
-	</wicket:remove>
+	</wicket:link>
 </head>
 <body>
 <h1>Paypal Reporting tool</h1>
@@ -17,9 +17,9 @@
 	<li>
 		<h2>Review uploaded data</h2>
 		<ul>
-			<li><a>Show accounts</a></li>
-			<li><a>Show transactions</a></li>
-			<li><a wicket:id="showTransactionTypes">Show transaction types</a></li>
+			<li><wicket:link><a href="../account/AccountListPage.html">Show accounts</a></wicket:link></li>
+			<li><wicket:link><a href="../txn/TxnListPage.html">Show transactions</a></wicket:link></li>
+			<li><wicket:link><a href="../txn/TxnTypeListPage.html">Show transaction types</a></wicket:link></li>
 		</ul>
 	</li>
 	<li>
