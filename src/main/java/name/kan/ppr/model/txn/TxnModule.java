@@ -7,6 +7,7 @@ import name.kan.jdbc.PostgresSequenceGenerator;
 import name.kan.jdbc.SequenceGenerator;
 import name.kan.ppr.parser.JdbcPaypalParserCallback;
 import name.kan.ppr.parser.PaypalParserCallback;
+import name.kan.ppr.web.txn.TxnDataProvider;
 import name.kan.ppr.web.txn.TxnTypeChildrenDataProvider;
 import name.kan.ppr.web.txn.TxnTypeChildrenDataProviderFactory;
 import name.kan.ppr.web.txn.TxnTypeDataProvider;
@@ -43,5 +44,7 @@ public class TxnModule extends AbstractModule
 		install(new FactoryModuleBuilder()
 				.implement(new TypeLiteral<IDataProvider<TxnTypeEntity>>(){}, TxnTypeChildrenDataProvider.class)
 				.build(TxnTypeChildrenDataProviderFactory.class));
+		bind(new TypeLiteral<IDataProvider<TxnEntity>>(){})
+				.to(TxnDataProvider.class);
 	}
 }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+	<title>Paypal report</title>
+	<wicket:link>
+		<link rel ="stylesheet" type="text/css" href="../main/ppr.css" title="style">
+	</wicket:link>
+</head>
+<body>
+<p><a wicket:id="homePageLink">Home</a></p>
+<h1>Transactions</h1>
+<table wicket:id="txnTable" class="dataGrid">
+	<tr>
+		<th>Ref</th>
+		<th>Datetime</th>
+		<th>Status</th>
+		<th>Name</th>
+		<th>Type</th>
+		<th>Gross</th>
+		<th>fee</th>
+		<th>D/C</th>
+	</tr>
+	<wicket:container wicket:id="txns">
+		<tr>
+			<td wicket:id="reference">54052958PJ614430V</td>
+			<td><span wicket:id="dateTime">01/02/1999 12:13:31</span></td>
+			<td wicket:id="account.name">Rachael Stevenson</td>
+			<td wicket:id="type.name">Shopping Cart Payment Received</td>
+			<td><span wicket:id="status">COMPLETED</span></td>
+			<td class="money"><span wicket:id="gross">USD12.34</span></td>
+			<td class="money"><span wicket:id="fee">USD5.67</span></td>
+			<td><span wicket:id="credit">Debit</span></td>
+		</tr>
+	</wicket:container>
+</table>
+<p><div wicket:id="navigator">[Navigation bar]</div></p>
+</body>
+</html>
