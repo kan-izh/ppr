@@ -1,6 +1,9 @@
 package name.kan.ppr.web.account;
 
 import name.kan.ppr.model.account.AccountEntity;
+
+import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
@@ -22,6 +25,10 @@ public class AccountListPage extends WebPage
 	{
 		super.onInitialize();
 		add(new BookmarkablePageLink<Void>("homePageLink", getApplication().getHomePage()));
-		add(new AccountDataView("accounts", dataProvider));
+		final WebMarkupContainer accountTable = new WebMarkupContainer("accountTable");
+		add(accountTable.setOutputMarkupId(true));
+		final AccountDataView accountDataView = new AccountDataView("accounts", dataProvider);
+		accountTable.add(accountDataView);
+		add(new AjaxPagingNavigator("navigator", accountDataView));
 	}
 }

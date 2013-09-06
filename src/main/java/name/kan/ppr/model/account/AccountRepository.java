@@ -10,5 +10,5 @@ public interface AccountRepository
 {
 	AccountEntity obtainByName(String name);
 
-	List<AccountEntity> findAccounts();
+	List<AccountEntity> findAccounts(final long first, final long count);
 }

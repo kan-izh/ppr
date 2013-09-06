@@ -41,12 +41,18 @@ public class AccountRepositoryImpl implements AccountRepository
 	}
 
 	@Override
-	public List<AccountEntity> findAccounts()
+	public List<AccountEntity> findAccounts(final long first, final long count)
 	{
 		try
 		{
-			final PreparedStatement statement = connection().prepareStatement("SELECT id, name FROM account ORDER BY name, id");
+			final PreparedStatement statement = connection().prepareStatement(
+					"SELECT id, name"
+							+ " FROM account"
+							+ " ORDER BY lower(name), id"
+							+ " LIMIT ? OFFSET ?");
 			final ArrayList<AccountEntity> list = new ArrayList<>();
+			statement.setLong(1, count);
+			statement.setLong(2, first);
 			for(final ResultSet rs = statement.executeQuery(); rs.next();)
 				list.add(map(rs));
 			return list;

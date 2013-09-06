@@ -30,14 +30,14 @@ public class AccountDataProvider implements IDataProvider<AccountEntity>
 	@Override
 	public Iterator<? extends AccountEntity> iterator(final long first, final long count)
 	{
-		return repository.findAccounts().iterator();
+		return repository.findAccounts(first, count).iterator();
 	}
 
 	@Transactional
 	@Override
 	public long size()
 	{
-		return repository.findAccounts().size();
+		return repository.findAccounts(0, Long.MAX_VALUE).size();
 	}
 
 	@Override
